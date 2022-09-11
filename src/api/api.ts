@@ -1,12 +1,13 @@
-const BASE_URL = 'https://rickandmortyapi.com/api/';
+const BASE_URL = `https://rickandmortyapi.com/api/`;
 
 export const api = {
     async getCharacters({page, name, status, gender, species, type}: CharacterFilter) {
-        const CHARACTERS = `character/?page=${page}&name=${name}&status=${status}$gender=${gender}&species=${species}`;
+        const CHARACTERS = `character/?page=${page}&name=${name}&status=${status}&gender=${gender}&species=${species}`;
+
         return await fetch(`${BASE_URL}${CHARACTERS}`).then(res => res.json());
     },
     async getLocation() {
-        return await fetch(`${BASE_URL}location`).then(res => res.json());
+        return await fetch(`${BASE_URL}`).then(res => res.json());
     },
     async getEpisode() {
         return await fetch(`${BASE_URL}episode`).then(res => res.json());
@@ -32,8 +33,11 @@ export interface Endpoints {
 }
 
 export interface CharacterFilter {
-    name?: string
+    name: string
     type?: string
+    /**
+     * 'Human' | 'Humanoid' | 'unknown' | 'Robot' | 'Alien' | 'Disease'
+     */
     species?: string
     /**
      * 'Dead' | 'Alive' | 'unknown'
@@ -42,7 +46,7 @@ export interface CharacterFilter {
     /**
      * 'Female' | 'Male' | 'Genderless' | 'unknown'
      */
-    gender?: string
+    gender: string
     page?: number
 }
 
@@ -104,5 +108,5 @@ export interface Info<T> {
         /** Link to the previous page (if it exists) */
         prev: string | null
     }
-    results?: T
+    results: T
 }

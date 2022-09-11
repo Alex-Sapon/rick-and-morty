@@ -2,15 +2,23 @@ import React from 'react';
 import './App.scss';
 import {Header} from '../header/Header';
 import {Characters} from '../characters';
+import {Footer} from '../footer/Footer';
+import {Routes, Route, Navigate} from 'react-router-dom';
 
 function App() {
     return (
-        <>
+        <main className="flex flex-col">
             <Header/>
-            <main className="container max-w-5xl mx-auto px-2">
-                <Characters/>
-            </main>
-        </>
+            <section className="container max-w-5xl mx-auto px-2 grow">
+                <Routes>
+                    <Route path={'/'} element={<Navigate to={'/characters'}/>}/>
+                    <Route path={'/characters'} element={<Characters/>}/>
+                    <Route path={'/locations'} element={<Characters/>}/>
+                    <Route path={'/episodes'} element={<Characters/>}/>
+                </Routes>
+            </section>
+            <Footer/>
+        </main>
     );
 }
 
