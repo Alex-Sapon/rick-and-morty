@@ -28,9 +28,9 @@ export const charactersSlice = createSlice({
         error: '',
         info: {
             count: 0,
-            next: null,
+            next: '',
             pages: 0,
-            prev: null
+            prev: ''
         },
         results: [] as Character[]
     },
@@ -47,6 +47,9 @@ export const charactersSlice = createSlice({
         changeStatus(state, action: PayloadAction<{ status: string }>) {
             state.filter.status = action.payload.status;
         },
+        changePage(state, action: PayloadAction<{ page: number }>) {
+            state.filter.page = action.payload.page;
+        },
     },
     extraReducers: builder => {
         builder
@@ -56,6 +59,8 @@ export const charactersSlice = createSlice({
             .addCase(fetchCharacters.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.info.count = action.payload.info?.count!;
+                state.info.next = action.payload.info?.next!;
+                state.info.prev = action.payload.info?.prev!;
                 state.results = action.payload.results;
             })
             .addCase(fetchCharacters.rejected, (state, action) => {
@@ -66,5 +71,12 @@ export const charactersSlice = createSlice({
 })
 
 export const charactersReducer = charactersSlice.reducer;
-const {changeGender, changeName, changeSpecies, changeStatus} = charactersSlice.actions;
-export const charactersAsyncActions = {fetchCharacters, changeGender, changeName, changeSpecies, changeStatus};
+const {changeGender, changeName, changeSpecies, changeStatus, changePage} = charactersSlice.actions;
+export const charactersAsyncActions = {
+    fetchCharacters,
+    changeGender,
+    changeName,
+    changeSpecies,
+    changeStatus,
+    changePage,
+};

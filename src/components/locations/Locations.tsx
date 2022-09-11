@@ -1,17 +1,10 @@
-import {ChangeEvent, useEffect, useState} from 'react';
+import {Pagination} from '../pagination/Pagination';
 import {useActions, useAppSelector, useDebounce} from '../../hooks/hooks';
 import {charactersAsyncActions} from '../../store/charactersReducer';
-import {Pagination} from '../pagination/Pagination';
+import {ChangeEvent, useEffect, useState} from 'react';
 
-export const Characters = () => {
-    const {
-        fetchCharacters,
-        changeGender,
-        changeName,
-        changeSpecies,
-        changeStatus,
-        changePage,
-    } = useActions(charactersAsyncActions);
+export const Locations = () => {
+    const {fetchCharacters, changeGender, changeName, changeSpecies, changeStatus} = useActions(charactersAsyncActions);
 
     const [value, setValue] = useState('');
 
@@ -21,9 +14,6 @@ export const Characters = () => {
     const name = useAppSelector(state => state.characters.filter.name);
     const species = useAppSelector(state => state.characters.filter.species);
     const status = useAppSelector(state => state.characters.filter.status);
-    const page = useAppSelector(state => state.characters.filter.page);
-    const nextPage = useAppSelector(state => state.characters.info.next);
-    const prevPage = useAppSelector(state => state.characters.info.prev);
 
     const onValueChange = (e: ChangeEvent<HTMLInputElement>) => {
         setValue(e.currentTarget.value);
@@ -41,28 +31,9 @@ export const Characters = () => {
         changeStatus({status: e.currentTarget.value});
     }
 
-    const onPrevPageClick = () => {
-        const valuePrevPage = Number(prevPage.replace(/\D/ig, ''));
-        if (!!valuePrevPage) {
-            changePage({page: valuePrevPage})
-        }
-    }
-
-    const onNextPageClick = () => {
-        const valueNextPage = Number(nextPage.replace(/\D/ig, ''));
-        if (!!valueNextPage) {
-            changePage({page: valueNextPage});
-        }
-
-    }
-
     const onResetClick = () => {
         setValue('');
-        changeGender({gender: ''});
-        changeName({name: ''});
-        changeGender({gender: ''});
-        changeStatus({status: ''});
-        changeSpecies({species: ''});
+
     }
 
     const debouncedValue = useDebounce<string>(value, 600);
@@ -73,12 +44,12 @@ export const Characters = () => {
 
     useEffect(() => {
         fetchCharacters();
-    }, [fetchCharacters, gender, name, species, status, page])
+    }, [fetchCharacters, gender, name, species, status])
 
     return (
         <div>
-            <img className="h=[200px] mb=[15px] mx-[auto] my-6" src="img/logo_name.png" alt="Rick_and_Morty"/>
-            <div className="flex justify-between items-center mb-5">
+            <img className="h=[200px] mb=[15px] mx-[auto] my-6" src="img/bg-locations.png" alt="Rick_and_Morty"/>
+            <div className="flex justify-around items-center mb-5">
                 <div className="flex flex-col">
                     <span className="col-span-1 p-1 text-transparent font-bold">.</span>
                     <label className="relative block">
@@ -101,7 +72,7 @@ export const Characters = () => {
                     </label>
                 </div>
                 <div className="flex flex-col">
-                    <span className="col-span-1 p-1 text-gray-500 font-bold">Species</span>
+                    <span className="col-span-1 p-1 text-gray-500 font-bold">Type</span>
                     <select
                         value={species}
                         onChange={onSpeciesSelect}
@@ -117,7 +88,7 @@ export const Characters = () => {
                     </select>
                 </div>
                 <div className="flex flex-col">
-                    <span className="col-span-1 p-1 text-gray-500 font-bold">Gender</span>
+                    <span className="col-span-1 p-1 text-gray-500 font-bold">Dimension</span>
                     <select
                         value={gender}
                         onChange={onGenderSelect}
@@ -130,19 +101,6 @@ export const Characters = () => {
                         <option value="Unknown">Unknown</option>
                     </select>
                 </div>
-                <div className="flex flex-col">
-                    <span className="col-span-1 p-1 text-gray-500 font-bold">Status</span>
-                    <select
-                        value={status}
-                        onChange={onStatusSelect}
-                        className="w-[240px] h-[45px] bg-white border border-slate-300 rounded-md py-1 px-3 shadow-sm focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 sm:text-sm"
-                    >
-                        <option value=""/>
-                        <option value="Alive">Alive</option>
-                        <option value="Dead">Dead</option>
-                        <option value="unknown">unknown</option>
-                    </select>
-                </div>
             </div>
             <button
                 onClick={onResetClick}
@@ -151,7 +109,7 @@ export const Characters = () => {
             </button>
             <div className="grid grid-cols-4 gap-5">
                 {results.map(({id, name, image, species}) =>
-                    <div key={id} className="rounded shadow-md h-[270px]">
+                    <div key={id} className="rounded shadow-md">
                         <img src={image} alt="Photo" className="h-[190px] w-[100%] object-cover rounded-t"/>
                         <div className="p-4">
                             <h3 className="font-medium">{name}</h3>
@@ -161,9 +119,10 @@ export const Characters = () => {
                 )}
             </div>
             <Pagination
-                page={page!}
-                paginateBack={onPrevPageClick}
-                paginateFront={onNextPageClick}
+                page={1}
+                paginateBack={() => {}}
+                paginateFront={() => {
+                }}
                 postsPerPage={20}
                 totalPosts={count}
             />

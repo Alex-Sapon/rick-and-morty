@@ -1,27 +1,28 @@
 import React from 'react';
 
 type PaginationPropsType = {
+    page: number
     postsPerPage: number
     totalPosts: number
     paginateFront: () => void
     paginateBack: () => void
-    currentPage: number
 }
 
 export const Pagination = (props: PaginationPropsType) => {
-    const {postsPerPage, totalPosts, paginateFront, paginateBack, currentPage} = props;
+    const {postsPerPage, totalPosts, paginateFront, paginateBack, page} = props;
+
+    const totalPage = Math.ceil(totalPosts / postsPerPage);
 
     return (
         <div className="py-6 flex items-center justify-center">
-            <div>
+            <div className="flex items-center justify-center">
                 <p className="text-sm text-gray-700">
-                    Showing
-                    <span className="font-medium mx-2">{currentPage * postsPerPage - 10}</span>
-                    to
-                    <span className="font-medium mx-2">{currentPage * postsPerPage}</span>
+                    Page
+                    <span className="font-medium mx-2">{page}</span>
+                </p>
+                <p className="text-sm text-gray-700">
                     of
-                    <span className="font-medium mx-2">{totalPosts}</span>
-                    results
+                    <span className="font-medium mx-2">{totalPage}</span>
                 </p>
             </div>
             <nav className="block"/>
