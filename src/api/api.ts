@@ -6,6 +6,9 @@ export const api = {
 
         return await fetch(`${BASE_URL}${CHARACTERS}`).then(res => res.json());
     },
+    async getCharactersItem(id: number) {
+        return await fetch(`${BASE_URL}character/${id}`).then(res => res.json()) as Character;
+    },
     async getLocation() {
         return await fetch(`${BASE_URL}`).then(res => res.json());
     },

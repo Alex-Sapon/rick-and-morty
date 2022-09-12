@@ -4,11 +4,20 @@ import {RootState} from '../components/app/store';
 
 const fetchCharacters = createAsyncThunk<Info<Character[]>, void, { rejectValue: string }>
 ('characters/fetchCharacters', async (_, {rejectWithValue, getState}) => {
-    const {status, gender, species, page, type, name} = (getState() as RootState).characters.filter;
+    const {status, gender, species, page, type, name} = (getState() as RootState).charactersPage.filter;
 
     try {
         return await api.getCharacters({status, gender, species, page, type, name});
     } catch (e) {
+        return rejectWithValue((e as Error).message);
+    }
+})
+
+const fetchCharactersItem = createAsyncThunk<Character, {id: number}, { rejectValue: string }>
+('characters/fetchCharactersItem', async ({id}, {rejectWithValue}) => {
+    try {
+        return await api.getCharactersItem(id);
+    } catch(e) {
         return rejectWithValue((e as Error).message);
     }
 })
@@ -32,7 +41,8 @@ export const charactersSlice = createSlice({
             pages: 0,
             prev: ''
         },
-        results: [] as Character[]
+        characters: [] as Character[],
+        character: {} as Character,
     },
     reducers: {
         changeFilter(state, action: PayloadAction<CharacterFilter>) {
@@ -49,9 +59,20 @@ export const charactersSlice = createSlice({
                 state.info.count = action.payload.info?.count!;
                 state.info.next = action.payload.info?.next!;
                 state.info.prev = action.payload.info?.prev!;
-                state.results = action.payload.results;
+                state.characters = action.payload.results;
             })
             .addCase(fetchCharacters.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.payload!;
+            })
+            .addCase(fetchCharactersItem.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(fetchCharactersItem.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.character = action.payload;
+            })
+            .addCase(fetchCharactersItem.rejected, (state, action) => {
                 state.isLoading = false;
                 state.error = action.payload!;
             })
@@ -60,4 +81,4 @@ export const charactersSlice = createSlice({
 
 export const charactersReducer = charactersSlice.reducer;
 const {changeFilter} = charactersSlice.actions;
-export const charactersActions = {fetchCharacters, changeFilter};
+export const charactersActions = {fetchCharacters, changeFilter, fetchCharactersItem};

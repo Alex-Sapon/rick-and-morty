@@ -4,7 +4,7 @@ import {combineReducers} from 'redux';
 import {charactersReducer} from '../../store/charactersReducer';
 
 const rootReducer = combineReducers({
-    characters: charactersReducer
+    charactersPage: charactersReducer
 })
 
 export const store = configureStore({

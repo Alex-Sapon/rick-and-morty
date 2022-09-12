@@ -5,6 +5,7 @@ import {Characters} from '../characters';
 import {Footer} from '../footer/Footer';
 import {Routes, Route, Navigate} from 'react-router-dom';
 import {Locations} from '../locations/Locations';
+import {CharacterCard} from '../characters/characterCard/CharacterCard';
 
 function App() {
     return (
@@ -14,6 +15,7 @@ function App() {
                 <Routes>
                     <Route path={'/'} element={<Navigate to={'/characters'}/>}/>
                     <Route path={'/characters'} element={<Characters/>}/>
+                    <Route path={'/characters/:id'} element={<CharacterCard/>}/>
                     <Route path={'/locations'} element={<Locations/>}/>
                     <Route path={'/episodes'} element={<Characters/>}/>
                 </Routes>

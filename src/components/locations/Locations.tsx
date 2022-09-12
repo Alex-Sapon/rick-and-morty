@@ -9,12 +9,12 @@ export const Locations = () => {
 
     const [value, setValue] = useState('');
 
-    const results = useAppSelector(state => state.characters.results);
-    const count = useAppSelector(state => state.characters.info.count);
-    const gender = useAppSelector(state => state.characters.filter.gender);
-    const name = useAppSelector(state => state.characters.filter.name);
-    const species = useAppSelector(state => state.characters.filter.species);
-    const status = useAppSelector(state => state.characters.filter.status);
+    const characters = useAppSelector(state => state.charactersPage.characters);
+    const count = useAppSelector(state => state.charactersPage.info.count);
+    const gender = useAppSelector(state => state.charactersPage.filter.gender);
+    const name = useAppSelector(state => state.charactersPage.filter.name);
+    const species = useAppSelector(state => state.charactersPage.filter.species);
+    const status = useAppSelector(state => state.charactersPage.filter.status);
 
     const onValueChange = (e: ChangeEvent<HTMLInputElement>) => {
         setValue(e.currentTarget.value);
@@ -109,7 +109,7 @@ export const Locations = () => {
                 Reset filter
             </button>
             <div className="grid grid-cols-4 gap-5">
-                {results.map(({id, name, image, species}) =>
+                {characters.map(({id, name, image, species}) =>
                     <div key={id} className="rounded shadow-md">
                         <img src={image} alt="Photo" className="h-[190px] w-[100%] object-cover rounded-t"/>
                         <div className="p-4">

@@ -4,21 +4,23 @@ import {charactersActions} from '../../store/charactersReducer';
 import {Pagination} from '../pagination/Pagination';
 import Logo from '../../assets/img/logo_name.png';
 import {NavLink} from 'react-router-dom';
+import {Preloader} from '../preloader/Preloader';
 
 export const Characters = () => {
     const {fetchCharacters, changeFilter} = useActions(charactersActions);
 
     const [value, setValue] = useState('');
 
-    const results = useAppSelector(state => state.characters.results);
-    const count = useAppSelector(state => state.characters.info.count);
-    const gender = useAppSelector(state => state.characters.filter.gender);
-    const name = useAppSelector(state => state.characters.filter.name);
-    const species = useAppSelector(state => state.characters.filter.species);
-    const status = useAppSelector(state => state.characters.filter.status);
-    const page = useAppSelector(state => state.characters.filter.page);
-    const nextPage = useAppSelector(state => state.characters.info.next);
-    const prevPage = useAppSelector(state => state.characters.info.prev);
+    const characters = useAppSelector(state => state.charactersPage.characters);
+    const count = useAppSelector(state => state.charactersPage.info.count);
+    const gender = useAppSelector(state => state.charactersPage.filter.gender);
+    const name = useAppSelector(state => state.charactersPage.filter.name);
+    const species = useAppSelector(state => state.charactersPage.filter.species);
+    const status = useAppSelector(state => state.charactersPage.filter.status);
+    const page = useAppSelector(state => state.charactersPage.filter.page);
+    const nextPage = useAppSelector(state => state.charactersPage.info.next);
+    const prevPage = useAppSelector(state => state.charactersPage.info.prev);
+    const isLoading = useAppSelector(state => state.charactersPage.isLoading);
 
     const onValueChange = (e: ChangeEvent<HTMLInputElement>) => {
         setValue(e.currentTarget.value);
@@ -68,6 +70,10 @@ export const Characters = () => {
     useEffect(() => {
         fetchCharacters();
     }, [fetchCharacters, gender, name, species, status, page])
+
+    if (isLoading) {
+        return <Preloader/>
+    }
 
     return (
         <div>
@@ -144,9 +150,9 @@ export const Characters = () => {
                 Reset filter
             </button>
             <div className="grid grid-cols-4 gap-5">
-                {results?.map(({id, name, image, species}) =>
+                {characters?.map(({id, name, image, species}) =>
                     <div key={id} className="rounded shadow-md h-[270px] cursor-pointer transition duration-700 ease-in-out hover:shadow-2xl">
-                        <NavLink to={``}>
+                        <NavLink to={`/characters/${id}`}>
                             <img src={image} alt="Photo" className="h-[190px] w-[100%] object-cover rounded-t"/>
                         </NavLink>
                         <div className="p-4">
