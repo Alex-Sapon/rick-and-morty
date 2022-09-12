@@ -35,20 +35,8 @@ export const charactersSlice = createSlice({
         results: [] as Character[]
     },
     reducers: {
-        changeGender(state, action: PayloadAction<{ gender: string }>) {
-            state.filter.gender = action.payload.gender;
-        },
-        changeName(state, action: PayloadAction<{ name: string }>) {
-            state.filter.name = action.payload.name;
-        },
-        changeSpecies(state, action: PayloadAction<{ species: string }>) {
-            state.filter.species = action.payload.species;
-        },
-        changeStatus(state, action: PayloadAction<{ status: string }>) {
-            state.filter.status = action.payload.status;
-        },
-        changePage(state, action: PayloadAction<{ page: number }>) {
-            state.filter.page = action.payload.page;
+        changeFilter(state, action: PayloadAction<CharacterFilter>) {
+            state.filter = action.payload;
         },
     },
     extraReducers: builder => {
@@ -71,12 +59,5 @@ export const charactersSlice = createSlice({
 })
 
 export const charactersReducer = charactersSlice.reducer;
-const {changeGender, changeName, changeSpecies, changeStatus, changePage} = charactersSlice.actions;
-export const charactersAsyncActions = {
-    fetchCharacters,
-    changeGender,
-    changeName,
-    changeSpecies,
-    changeStatus,
-    changePage,
-};
+const {changeFilter} = charactersSlice.actions;
+export const charactersActions = {fetchCharacters, changeFilter};

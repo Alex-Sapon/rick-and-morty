@@ -1,19 +1,12 @@
 import {ChangeEvent, useEffect, useState} from 'react';
 import {useActions, useAppSelector, useDebounce} from '../../hooks/hooks';
-import {charactersAsyncActions} from '../../store/charactersReducer';
+import {charactersActions} from '../../store/charactersReducer';
 import {Pagination} from '../pagination/Pagination';
 import Logo from '../../assets/img/logo_name.png';
 import {NavLink} from 'react-router-dom';
 
 export const Characters = () => {
-    const {
-        fetchCharacters,
-        changeGender,
-        changeName,
-        changeSpecies,
-        changeStatus,
-        changePage,
-    } = useActions(charactersAsyncActions);
+    const {fetchCharacters, changeFilter} = useActions(charactersActions);
 
     const [value, setValue] = useState('');
 
@@ -32,22 +25,22 @@ export const Characters = () => {
     }
 
     const onGenderSelect = (e: ChangeEvent<HTMLSelectElement>) => {
-        changeGender({gender: e.target.value});
+        changeFilter({gender: e.target.value, species, status, page, name});
     }
 
     const onSpeciesSelect = (e: ChangeEvent<HTMLSelectElement>) => {
-        changeSpecies({species: e.currentTarget.value});
+        changeFilter({species: e.target.value, page, name, status, gender});
     }
 
     const onStatusSelect = (e: ChangeEvent<HTMLSelectElement>) => {
-        changeStatus({status: e.currentTarget.value});
+        changeFilter({status: e.target.value, name, species, gender, page});
     }
 
     const onPrevPageClick = () => {
         if (prevPage) {
             const valuePrevPage = Number(prevPage.replace(/\D/ig, ''));
             if (!!valuePrevPage) {
-                changePage({page: valuePrevPage})
+                changeFilter({page: valuePrevPage, gender, name, species, status})
             }
         }
     }
@@ -56,25 +49,21 @@ export const Characters = () => {
         if (nextPage) {
             const valueNextPage = Number(nextPage.replace(/\D/ig, ''));
             if (!!valueNextPage) {
-                changePage({page: valueNextPage});
+                changeFilter({page: valueNextPage, species, status, gender, name});
             }
         }
     }
 
     const onResetClick = () => {
         setValue('');
-        changeGender({gender: ''});
-        changeName({name: ''});
-        changeGender({gender: ''});
-        changeStatus({status: ''});
-        changeSpecies({species: ''});
+        changeFilter({page: 1, gender: '', name: '', status: '', species: ''});
     }
 
     const debouncedValue = useDebounce<string>(value, 600);
 
     useEffect(() => {
-        changeName({name: debouncedValue});
-    }, [debouncedValue, changeName])
+        changeFilter({name: debouncedValue, gender, page: 1, species, status});
+    }, [debouncedValue, changeFilter])
 
     useEffect(() => {
         fetchCharacters();
@@ -155,7 +144,7 @@ export const Characters = () => {
                 Reset filter
             </button>
             <div className="grid grid-cols-4 gap-5">
-                {results.map(({id, name, image, species}) =>
+                {results?.map(({id, name, image, species}) =>
                     <div key={id} className="rounded shadow-md h-[270px] cursor-pointer transition duration-700 ease-in-out hover:shadow-2xl">
                         <NavLink to={``}>
                             <img src={image} alt="Photo" className="h-[190px] w-[100%] object-cover rounded-t"/>

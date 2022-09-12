@@ -1,11 +1,11 @@
 import {Pagination} from '../pagination/Pagination';
 import {useActions, useAppSelector, useDebounce} from '../../hooks/hooks';
-import {charactersAsyncActions} from '../../store/charactersReducer';
+import {charactersActions} from '../../store/charactersReducer';
 import {ChangeEvent, useEffect, useState} from 'react';
 import Logo from '../../assets/img/bg-locations.png';
 
 export const Locations = () => {
-    const {fetchCharacters, changeGender, changeName, changeSpecies, changeStatus} = useActions(charactersAsyncActions);
+    const {fetchCharacters} = useActions(charactersActions);
 
     const [value, setValue] = useState('');
 
@@ -21,15 +21,15 @@ export const Locations = () => {
     }
 
     const onGenderSelect = (e: ChangeEvent<HTMLSelectElement>) => {
-        changeGender({gender: e.target.value});
+        // fetchCharacters({gender: e.target.value});
     }
 
     const onSpeciesSelect = (e: ChangeEvent<HTMLSelectElement>) => {
-        changeSpecies({species: e.currentTarget.value});
+        // fetchCharacters({species: e.currentTarget.value});
     }
 
     const onStatusSelect = (e: ChangeEvent<HTMLSelectElement>) => {
-        changeStatus({status: e.currentTarget.value});
+        // fetchCharacters({status: e.currentTarget.value});
     }
 
     const onResetClick = () => {
@@ -40,8 +40,8 @@ export const Locations = () => {
     const debouncedValue = useDebounce<string>(value, 600);
 
     useEffect(() => {
-        changeName({name: debouncedValue});
-    }, [debouncedValue, changeName])
+        // fetchCharacters({name: debouncedValue});
+    }, [debouncedValue, fetchCharacters])
 
     useEffect(() => {
         fetchCharacters();

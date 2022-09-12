@@ -1,7 +1,7 @@
 const BASE_URL = `https://rickandmortyapi.com/api/`;
 
 export const api = {
-    async getCharacters({page, name, status, gender, species, type}: CharacterFilter) {
+    async getCharacters({page, name, status, gender, species}: CharacterFilter) {
         const CHARACTERS = `character/?page=${page}&name=${name}&status=${status}&gender=${gender}&species=${species}`;
 
         return await fetch(`${BASE_URL}${CHARACTERS}`).then(res => res.json());
@@ -33,7 +33,12 @@ export interface Endpoints {
 }
 
 export interface CharacterFilter {
-    name: string
+    name?: string
+    /**
+     * 'Genetic experiment'
+     * | 'Superhuman (Ghost trains summoner' | 'Parasite' | 'Human with antennae'
+     * | 'Human with ants in his eyes' | 'Fish-Person' | 'Cromulon' | 'Mytholog'
+     */
     type?: string
     /**
      * 'Human' | 'Humanoid' | 'unknown' | 'Robot' | 'Alien' | 'Disease'
@@ -46,7 +51,7 @@ export interface CharacterFilter {
     /**
      * 'Female' | 'Male' | 'Genderless' | 'unknown'
      */
-    gender: string
+    gender?: string
     page?: number
 }
 
