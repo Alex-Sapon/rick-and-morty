@@ -86,10 +86,10 @@ export interface Character extends ResourceBase {
     episode: string[]
 }
 
-export interface Location extends ResourceBase {
+export interface Location<T = string[]> extends ResourceBase {
     type: string
     dimension: string
-    residents: Character[]
+    residents: T
 }
 
 export interface Episode extends ResourceBase {

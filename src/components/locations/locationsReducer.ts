@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {api, Info, Location, LocationFilter} from '../../api/api';
+import {api, Character, Info, Location, LocationFilter} from '../../api/api';
 import {RootState} from '../app/store';
 
 const fetchLocations = createAsyncThunk<Info<Location[]>, void, { rejectValue: string }>
@@ -13,6 +13,25 @@ const fetchLocations = createAsyncThunk<Info<Location[]>, void, { rejectValue: s
     }
 })
 
+const fetchLocationsItem = createAsyncThunk<Location<Character[]>, { id: number }, { rejectValue: string }>
+('locations/fetchLocationsItem', async ({id}, {rejectWithValue}) => {
+    try {
+        const result = await api.getLocationItem(id);
+
+        const residentsUrl = (result.residents as string[]).map(async (resident) => {
+            const id = Number(resident.replace(/\D/gi, ''));
+            return await api.getCharactersItem(id);
+        })
+
+        const residents = await Promise.all(residentsUrl);
+
+        return {...result, residents};
+
+    } catch (e) {
+        return rejectWithValue((e as Error).message);
+    }
+})
+
 const locationsSlice = createSlice({
     name: 'locations',
     initialState: {
@@ -21,6 +40,7 @@ const locationsSlice = createSlice({
             info: {count: 0, pages: 0, next: null, prev: null},
             results: [],
         },
+        location: {} as Location<Character[]>,
         isLoading: false,
         error: null,
     } as InitialStateType,
@@ -43,16 +63,29 @@ const locationsSlice = createSlice({
                 state.isLoading = false;
                 state.error = action.payload!;
             })
+            .addCase(fetchLocationsItem.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(fetchLocationsItem.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.error = null;
+                state.location = action.payload;
+            })
+            .addCase(fetchLocationsItem.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.payload!;
+            })
     }
 })
 
 export const locationsReducer = locationsSlice.reducer;
 const {changeLocationsFilter} = locationsSlice.actions;
-export const locationsActions = {fetchLocations, changeLocationsFilter};
+export const locationsActions = {fetchLocations, changeLocationsFilter, fetchLocationsItem};
 
 type InitialStateType = {
     filter: LocationFilter
     data: Info<Location[]>
+    location: Location<Character[]>
     isLoading: boolean
     error: string | null
 }
