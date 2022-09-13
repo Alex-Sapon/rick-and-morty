@@ -1,35 +1,30 @@
 import {Pagination} from '../pagination/Pagination';
 import {useActions, useAppSelector, useDebounce} from '../../hooks/hooks';
-import {charactersActions} from '../../store/charactersReducer';
 import {ChangeEvent, useEffect, useState} from 'react';
 import Logo from '../../assets/img/bg-locations.png';
+import {locationsActions} from './locationsReducer';
 
 export const Locations = () => {
-    const {fetchCharacters} = useActions(charactersActions);
+    const {fetchLocations} = useActions(locationsActions);
 
     const [value, setValue] = useState('');
 
-    const characters = useAppSelector(state => state.charactersPage.characters);
-    const count = useAppSelector(state => state.charactersPage.info.count);
-    const gender = useAppSelector(state => state.charactersPage.filter.gender);
-    const name = useAppSelector(state => state.charactersPage.filter.name);
-    const species = useAppSelector(state => state.charactersPage.filter.species);
-    const status = useAppSelector(state => state.charactersPage.filter.status);
+    const locations = useAppSelector(state => state.locationsPage.data.results);
 
     const onValueChange = (e: ChangeEvent<HTMLInputElement>) => {
         setValue(e.currentTarget.value);
     }
 
     const onGenderSelect = (e: ChangeEvent<HTMLSelectElement>) => {
-        // fetchCharacters({gender: e.target.value});
+
     }
 
     const onSpeciesSelect = (e: ChangeEvent<HTMLSelectElement>) => {
-        // fetchCharacters({species: e.currentTarget.value});
+
     }
 
     const onStatusSelect = (e: ChangeEvent<HTMLSelectElement>) => {
-        // fetchCharacters({status: e.currentTarget.value});
+
     }
 
     const onResetClick = () => {
@@ -40,16 +35,18 @@ export const Locations = () => {
     const debouncedValue = useDebounce<string>(value, 600);
 
     useEffect(() => {
-        // fetchCharacters({name: debouncedValue});
-    }, [debouncedValue, fetchCharacters])
+
+    }, [debouncedValue])
 
     useEffect(() => {
-        fetchCharacters();
-    }, [fetchCharacters, gender, name, species, status])
+        fetchLocations();
+    }, [fetchLocations])
 
     return (
         <div>
-            <img className="h=[200px] mb=[15px] mx-[auto] my-6" src={Logo} alt="Rick_and_Morty"/>
+            <div className="h-[200px] mb-[20px] mx-[auto]">
+                <img className="mx-[auto]" src={Logo} alt="Rick_and_Morty"/>
+            </div>
             <div className="flex justify-around items-center mb-5">
                 <div className="flex flex-col">
                     <span className="col-span-1 p-1 text-transparent font-bold">.</span>
@@ -65,7 +62,7 @@ export const Locations = () => {
                         <input
                             value={value}
                             onChange={onValueChange}
-                            className="w-[240px] h-[45px] placeholder:italic placeholder:text-slate-400 block bg-white w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 sm:text-sm"
+                            className="w-[325px] h-[45px] placeholder:italic placeholder:text-slate-400 block bg-white w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 sm:text-sm"
                             placeholder="Filter by name..."
                             type="text"
                             name="search"
@@ -75,7 +72,7 @@ export const Locations = () => {
                 <div className="flex flex-col">
                     <span className="col-span-1 p-1 text-gray-500 font-bold">Type</span>
                     <select
-                        value={species}
+                        value={'species'}
                         onChange={onSpeciesSelect}
                         className="w-[240px] h-[45px] bg-white border border-slate-300 rounded-md py-1 px-3 shadow-sm focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 sm:text-sm"
                     >
@@ -91,7 +88,7 @@ export const Locations = () => {
                 <div className="flex flex-col">
                     <span className="col-span-1 p-1 text-gray-500 font-bold">Dimension</span>
                     <select
-                        value={gender}
+                        value={'gender'}
                         onChange={onGenderSelect}
                         className="w-[240px] h-[45px] bg-white border border-slate-300 rounded-md py-1 px-3 shadow-sm focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 sm:text-sm"
                     >
@@ -109,24 +106,23 @@ export const Locations = () => {
                 Reset filter
             </button>
             <div className="grid grid-cols-4 gap-5">
-                {characters.map(({id, name, image, species}) =>
-                    <div key={id} className="rounded shadow-md">
-                        <img src={image} alt="Photo" className="h-[190px] w-[100%] object-cover rounded-t"/>
-                        <div className="p-4">
-                            <h3 className="font-medium">{name}</h3>
-                            <p>{species}</p>
-                        </div>
+                {locations.map(({id, name, created, type, url, residents, dimension}) =>
+                    <div key={id} className="text-center min-h-[128px] rounded shadow-md flex flex-col items-center justify-center bg-[#FAFAFA] p-4">
+                        <h3 className="leading-5 font-medium text-lg mb-1">{name}</h3>
+                        <p className="text-gray-400 font-medium">{dimension}</p>
                     </div>
                 )}
             </div>
             <Pagination
                 page={1}
-                paginateBack={() => {}}
+                paginateBack={() => {
+                }}
                 paginateFront={() => {
                 }}
                 postsPerPage={20}
-                totalPosts={count}
+                totalPosts={12}
             />
         </div>
     )
 }
+

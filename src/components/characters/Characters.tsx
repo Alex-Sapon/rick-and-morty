@@ -1,25 +1,25 @@
 import {ChangeEvent, useEffect, useState} from 'react';
 import {useActions, useAppSelector, useDebounce} from '../../hooks/hooks';
-import {charactersActions} from '../../store/charactersReducer';
+import {charactersActions} from './charactersReducer';
 import {Pagination} from '../pagination/Pagination';
 import Logo from '../../assets/img/logo_name.png';
 import {NavLink} from 'react-router-dom';
 import {Preloader} from '../preloader/Preloader';
 
 export const Characters = () => {
-    const {fetchCharacters, changeFilter} = useActions(charactersActions);
+    const {fetchCharacters, changeCharactersFilter} = useActions(charactersActions);
 
     const [value, setValue] = useState('');
 
-    const characters = useAppSelector(state => state.charactersPage.characters);
-    const count = useAppSelector(state => state.charactersPage.info.count);
+    const characters = useAppSelector(state => state.charactersPage.data.results);
+    const count = useAppSelector(state => state.charactersPage.data.info?.count);
     const gender = useAppSelector(state => state.charactersPage.filter.gender);
     const name = useAppSelector(state => state.charactersPage.filter.name);
     const species = useAppSelector(state => state.charactersPage.filter.species);
     const status = useAppSelector(state => state.charactersPage.filter.status);
     const page = useAppSelector(state => state.charactersPage.filter.page);
-    const nextPage = useAppSelector(state => state.charactersPage.info.next);
-    const prevPage = useAppSelector(state => state.charactersPage.info.prev);
+    const nextPage = useAppSelector(state => state.charactersPage.data.info?.next);
+    const prevPage = useAppSelector(state => state.charactersPage.data.info?.prev);
     const isLoading = useAppSelector(state => state.charactersPage.isLoading);
 
     const onValueChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -27,22 +27,22 @@ export const Characters = () => {
     }
 
     const onGenderSelect = (e: ChangeEvent<HTMLSelectElement>) => {
-        changeFilter({gender: e.target.value, species, status, page, name});
+        changeCharactersFilter({gender: e.target.value, species, status, page, name});
     }
 
     const onSpeciesSelect = (e: ChangeEvent<HTMLSelectElement>) => {
-        changeFilter({species: e.target.value, page, name, status, gender});
+        changeCharactersFilter({species: e.target.value, page, name, status, gender});
     }
 
     const onStatusSelect = (e: ChangeEvent<HTMLSelectElement>) => {
-        changeFilter({status: e.target.value, name, species, gender, page});
+        changeCharactersFilter({status: e.target.value, name, species, gender, page});
     }
 
     const onPrevPageClick = () => {
         if (prevPage) {
             const valuePrevPage = Number(prevPage.replace(/\D/ig, ''));
             if (!!valuePrevPage) {
-                changeFilter({page: valuePrevPage, gender, name, species, status})
+                changeCharactersFilter({page: valuePrevPage, gender, name, species, status})
             }
         }
     }
@@ -51,21 +51,21 @@ export const Characters = () => {
         if (nextPage) {
             const valueNextPage = Number(nextPage.replace(/\D/ig, ''));
             if (!!valueNextPage) {
-                changeFilter({page: valueNextPage, species, status, gender, name});
+                changeCharactersFilter({page: valueNextPage, species, status, gender, name});
             }
         }
     }
 
     const onResetClick = () => {
         setValue('');
-        changeFilter({page: 1, gender: '', name: '', status: '', species: ''});
+        changeCharactersFilter({page: 1, gender: '', name: '', status: '', species: ''});
     }
 
     const debouncedValue = useDebounce<string>(value, 600);
 
     useEffect(() => {
-        changeFilter({name: debouncedValue, gender, page: 1, species, status});
-    }, [debouncedValue, changeFilter])
+        changeCharactersFilter({name: debouncedValue, gender, page: 1, species, status});
+    }, [debouncedValue, changeCharactersFilter])
 
     useEffect(() => {
         fetchCharacters();
@@ -77,7 +77,9 @@ export const Characters = () => {
 
     return (
         <div>
-            <img className="h=[200px] mb=[15px] mx-[auto] my-6" src={Logo} alt="Rick_and_Morty"/>
+            <div className="h-[200px] mb-[20px] mx-[auto]">
+                <img className="mx-[auto]" src={Logo} alt="Rick_and_Morty"/>
+            </div>
             <div className="flex justify-between items-center mb-5">
                 <div className="flex flex-col">
                     <span className="col-span-1 p-1 text-transparent font-bold">.</span>
@@ -87,7 +89,8 @@ export const Characters = () => {
                              xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M15.5 15H14.71L14.43 14.73C15.41 13.59 16 12.11 16 10.5C16 6.91 13.09 4 9.5 4C5.91 4 3 6.91 3 10.5C3 14.09 5.91 17 9.5 17C11.11 17 12.59 16.41 13.73 15.43L14 15.71V16.5L19 21.49L20.49 20L15.5 15ZM9.5 15C7.01 15 5 12.99 5 10.5C5 8.01 7.01 6 9.5 6C11.99 6 14 8.01 14 10.5C14 12.99 11.99 15 9.5 15Z"
-                                fill="black" fillOpacity="0.54"/>
+                                fill="black" fillOpacity="0.54"
+                            />
                         </svg>
                     </span>
                         <input
@@ -146,7 +149,8 @@ export const Characters = () => {
             </div>
             <button
                 onClick={onResetClick}
-                className="py-2 px-3 bg-indigo-500 text-white text-sm font-semibold rounded-md shadow focus:outline-none mb-5">
+                className="py-2 px-3 bg-indigo-500 text-white text-sm font-semibold rounded-md shadow focus:outline-none mb-5"
+            >
                 Reset filter
             </button>
             <div className="grid grid-cols-4 gap-5">
@@ -167,7 +171,7 @@ export const Characters = () => {
                 paginateBack={onPrevPageClick}
                 paginateFront={onNextPageClick}
                 postsPerPage={20}
-                totalPosts={count}
+                totalPosts={count!}
             />
         </div>
     )

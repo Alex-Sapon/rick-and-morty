@@ -4,13 +4,18 @@ export const api = {
     async getCharacters({page, name, status, gender, species}: CharacterFilter) {
         const CHARACTERS = `character/?page=${page}&name=${name}&status=${status}&gender=${gender}&species=${species}`;
 
-        return await fetch(`${BASE_URL}${CHARACTERS}`).then(res => res.json());
+        return await fetch(`${BASE_URL}${CHARACTERS}`).then(res => res.json()) as Info<Character[]>;
     },
     async getCharactersItem(id: number) {
         return await fetch(`${BASE_URL}character/${id}`).then(res => res.json()) as Character;
     },
-    async getLocation() {
-        return await fetch(`${BASE_URL}`).then(res => res.json());
+    async getLocation({page, name, dimension, type}: LocationFilter) {
+        const LOCATION = `location?page=${page}&name=${name}&dimension=${dimension}&type=${type}`;
+
+        return await fetch(`${BASE_URL}${LOCATION}`).then(res => res.json()) as Info<Location[]>;
+    },
+    async getLocationItem(id: number) {
+        return await fetch(`${BASE_URL}location/${id}`).then(res => res.json()) as Location;
     },
     async getEpisode() {
         return await fetch(`${BASE_URL}episode`).then(res => res.json());

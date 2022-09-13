@@ -1,10 +1,12 @@
 import {configureStore} from '@reduxjs/toolkit';
 import thunk from 'redux-thunk';
 import {combineReducers} from 'redux';
-import {charactersReducer} from '../../store/charactersReducer';
+import {charactersReducer} from '../characters/charactersReducer';
+import {locationsReducer} from '../locations/locationsReducer';
 
 const rootReducer = combineReducers({
-    charactersPage: charactersReducer
+    charactersPage: charactersReducer,
+    locationsPage: locationsReducer,
 })
 
 export const store = configureStore({

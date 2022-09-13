@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {api, Character, CharacterFilter, Info} from '../api/api';
-import {RootState} from '../components/app/store';
+import {api, Character, CharacterFilter, Info} from '../../api/api';
+import {RootState} from '../app/store';
 
 const fetchCharacters = createAsyncThunk<Info<Character[]>, void, { rejectValue: string }>
 ('characters/fetchCharacters', async (_, {rejectWithValue, getState}) => {
@@ -25,27 +25,17 @@ const fetchCharactersItem = createAsyncThunk<Character, {id: number}, { rejectVa
 export const charactersSlice = createSlice({
     name: 'characters',
     initialState: {
-        filter: {
-            page: 1,
-            type: '',
-            species: '',
-            gender: '',
-            status: '',
-            name: '',
-        } as CharacterFilter,
+        filter: {page: 1, type: '', species: '', gender: '', status: '', name: ''},
+        data: {
+            info: {count: 0, next: '', pages: 0, prev: ''},
+            results: [],
+        },
         isLoading: false,
         error: '',
-        info: {
-            count: 0,
-            next: '',
-            pages: 0,
-            prev: ''
-        },
-        characters: [] as Character[],
         character: {} as Character,
-    },
+    } as InitialStateType,
     reducers: {
-        changeFilter(state, action: PayloadAction<CharacterFilter>) {
+        changeCharactersFilter(state, action: PayloadAction<CharacterFilter>) {
             state.filter = action.payload;
         },
     },
@@ -56,10 +46,7 @@ export const charactersSlice = createSlice({
             })
             .addCase(fetchCharacters.fulfilled, (state, action) => {
                 state.isLoading = false;
-                state.info.count = action.payload.info?.count!;
-                state.info.next = action.payload.info?.next!;
-                state.info.prev = action.payload.info?.prev!;
-                state.characters = action.payload.results;
+                state.data = action.payload;
             })
             .addCase(fetchCharacters.rejected, (state, action) => {
                 state.isLoading = false;
@@ -80,5 +67,13 @@ export const charactersSlice = createSlice({
 })
 
 export const charactersReducer = charactersSlice.reducer;
-const {changeFilter} = charactersSlice.actions;
-export const charactersActions = {fetchCharacters, changeFilter, fetchCharactersItem};
+const {changeCharactersFilter} = charactersSlice.actions;
+export const charactersActions = {fetchCharacters, changeCharactersFilter, fetchCharactersItem};
+
+type InitialStateType = {
+    filter: CharacterFilter
+    isLoading: boolean
+    error: string
+    data: Info<Character[]>
+    character: Character
+}

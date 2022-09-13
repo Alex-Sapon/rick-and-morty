@@ -11,7 +11,7 @@ function App() {
     return (
         <main className="flex flex-col">
             <Header/>
-            <section className="container max-w-5xl mx-auto px-2 grow">
+            <section className="container max-w-5xl mx-auto mt-8 px-2 grow">
                 <Routes>
                     <Route path={'/'} element={<Navigate to={'/characters'}/>}/>
                     <Route path={'/characters'} element={<Characters/>}/>
