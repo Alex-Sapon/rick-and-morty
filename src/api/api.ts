@@ -17,8 +17,13 @@ export const api = {
     async getLocationItem(id: number) {
         return await fetch(`${BASE_URL}location/${id}`).then(res => res.json()) as Location;
     },
-    async getEpisode() {
-        return await fetch(`${BASE_URL}episode`).then(res => res.json());
+    async getEpisode({page, name}: EpisodeFilter) {
+        const EPISODE = `episode?page=${page}&name=${name}`;
+
+        return await fetch(`${BASE_URL}${EPISODE}`).then(res => res.json()) as Info<Episode[]>;
+    },
+    async getEpisodeItem(id: number) {
+        return await fetch(`${BASE_URL}episode/${id}`).then(res => res.json()) as Episode;
     },
 }
 
@@ -92,10 +97,10 @@ export interface Location<T = string[]> extends ResourceBase {
     residents: T
 }
 
-export interface Episode extends ResourceBase {
+export interface Episode<T = string[]> extends ResourceBase {
     air_date: string
     episode: string
-    character: string[]
+    characters: T
 }
 
 export interface ApiResponse<T> {

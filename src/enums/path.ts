@@ -4,5 +4,6 @@ export enum PATH {
     CHARACTERS_CARD = '/characters/:id',
     LOCATIONS = '/locations',
     LOCATION_CARD = '/locations/:id',
-    EPISODES = '/episodes',
+    EPISODE = '/episode',
+    EPISODE_CARD = '/episode/:id',
 }

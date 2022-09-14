@@ -17,7 +17,7 @@ export const Header = () => {
                 <nav className="text-lg font-bold">
                     <NavLink to="/characters" className={active}>Characters</NavLink>
                     <NavLink to="/locations" className={active}>Locations</NavLink>
-                    <NavLink to="/episodes" className={active}>Episodes</NavLink>
+                    <NavLink to="/episode" className={active}>Episodes</NavLink>
                 </nav>
             </div>
         </header>

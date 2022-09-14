@@ -26,7 +26,6 @@ const fetchLocationsItem = createAsyncThunk<Location<Character[]>, { id: number 
         const residents = await Promise.all(residentsResponse);
 
         return {...result, residents};
-
     } catch (e) {
         return rejectWithValue((e as Error).message);
     }

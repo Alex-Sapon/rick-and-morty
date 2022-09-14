@@ -1,27 +1,27 @@
-import {useActions, useAppSelector} from '../../../hooks/hooks';
-import {locationsActions} from '../locationsReducer';
 import {Link, useNavigate, useParams} from 'react-router-dom';
+import {useActions, useAppSelector} from '../../../hooks/hooks';
 import {useEffect} from 'react';
 import {Preloader} from '../../preloader/Preloader';
+import {episodeActions} from '../episodesReducer';
 
-export const LocationsCard = () => {
-    const {fetchLocationsItem} = useActions(locationsActions);
+export const EpisodeCard = () => {
+    const {fetchEpisodeItem} = useActions(episodeActions);
 
     const navigate = useNavigate();
 
     const {id} = useParams<'id'>();
 
-    const isLoading = useAppSelector(state => state.locationsPage.isLoading);
-    const name = useAppSelector(state => state.locationsPage.location.name);
-    const type = useAppSelector(state => state.locationsPage.location.type);
-    const residents = useAppSelector(state => state.locationsPage.location.residents);
-    const dimension = useAppSelector(state => state.locationsPage.location.dimension);
+    const isLoading = useAppSelector(state => state.episodesPage.isLoading);
+    const episode = useAppSelector(state => state.episodesPage.episode.episode);
+    const name = useAppSelector(state => state.episodesPage.episode.name);
+    const airDate = useAppSelector(state => state.episodesPage.episode.air_date);
+    const characters = useAppSelector(state => state.episodesPage.episode.characters);
 
     useEffect(() => {
         if (Number(id)) {
-            fetchLocationsItem({id: Number(id)});
+            fetchEpisodeItem({id: Number(id)});
         }
-    }, [id, fetchLocationsItem])
+    }, [id, fetchEpisodeItem])
 
     if (isLoading) {
         return <Preloader/>
@@ -39,17 +39,17 @@ export const LocationsCard = () => {
             <h2 className="font-bold text-4xl text-center mb-10 text-[#081F32]">{name}</h2>
             <div className="grid grid-cols-2 gap-5 text-center mb-7">
                 <div className="">
-                    <h3 className="text-[#081F32] text-lg"><b>Type</b></h3>
-                    <p className="text-[#6E798C] font-medium">{type}</p>
+                    <h3 className="text-[#081F32] text-lg"><b>Episode</b></h3>
+                    <p className="text-[#6E798C] font-medium">{episode}</p>
                 </div>
                 <div>
-                    <h3 className="text-[#081F32] text-lg"><b>Dimension</b></h3>
-                    <p className="text-[#6E798C] font-medium">{dimension}</p>
+                    <h3 className="text-[#081F32] text-lg"><b>The air date of the episode</b></h3>
+                    <p className="text-[#6E798C] font-medium">{airDate}</p>
                 </div>
             </div>
-            <h3 className="text-[#6E798C] font-medium text-2xl mb-3 p-2">Residents</h3>
+            <h3 className="text-[#6E798C] font-medium text-2xl mb-3 p-2">Cast</h3>
             <ul className="grid grid-cols-4 gap-5">
-                {residents?.map(({id, name, image, species}) =>
+                {characters?.map(({id, name, image, species}) =>
                     <div key={id}
                          className="rounded shadow-md cursor-pointer transition duration-700 ease-in-out hover:shadow-2xl">
                         <Link to={`/characters/${id}`}>
