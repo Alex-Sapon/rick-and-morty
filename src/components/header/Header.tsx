@@ -1,6 +1,7 @@
 import React from 'react';
 import Logo from '../../assets/img/logo.png';
 import {NavLink} from 'react-router-dom';
+import {PATH} from '../../enums';
 
 export const Header = () => {
     const active = (navData: {isActive: boolean}): string => {
@@ -10,7 +11,9 @@ export const Header = () => {
     return (
         <header className="h-[60px] flex justify-between p-2 shadow-md flex-none sticky top-0 bg-white z-10">
             <div className="container max-w-5xl mx-auto px-2 flex justify-between items-center">
-                <img src={Logo} alt="Logo" className="w=[46px] h=[49px]"/>
+                <NavLink to={PATH.CHARACTERS}>
+                    <img src={Logo} alt="Logo" className="w=[46px] h=[49px]"/>
+                </NavLink>
                 <nav className="text-lg font-bold">
                     <NavLink to="/characters" className={active}>Characters</NavLink>
                     <NavLink to="/locations" className={active}>Locations</NavLink>

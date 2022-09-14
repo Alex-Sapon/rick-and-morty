@@ -6,7 +6,7 @@ export const api = {
 
         return await fetch(`${BASE_URL}${CHARACTERS}`).then(res => res.json()) as Info<Character[]>;
     },
-    async getCharactersItem(id: number) {
+    async getCharactersItem(id: number | null) {
         return await fetch(`${BASE_URL}character/${id}`).then(res => res.json()) as Character;
     },
     async getLocation({page, name, dimension, type}: LocationFilter) {

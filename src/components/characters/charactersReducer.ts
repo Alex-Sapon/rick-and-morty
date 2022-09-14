@@ -13,11 +13,11 @@ const fetchCharacters = createAsyncThunk<Info<Character[]>, void, { rejectValue:
     }
 })
 
-const fetchCharactersItem = createAsyncThunk<Character, {id: number}, { rejectValue: string }>
+const fetchCharactersItem = createAsyncThunk<Character, { id: number }, { rejectValue: string }>
 ('characters/fetchCharactersItem', async ({id}, {rejectWithValue}) => {
     try {
         return await api.getCharactersItem(id);
-    } catch(e) {
+    } catch (e) {
         return rejectWithValue((e as Error).message);
     }
 })

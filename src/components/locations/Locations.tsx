@@ -3,7 +3,7 @@ import {useActions, useAppSelector, useDebounce} from '../../hooks/hooks';
 import {ChangeEvent, useEffect, useState} from 'react';
 import Logo from '../../assets/img/bg-locations.png';
 import {locationsActions} from './locationsReducer';
-import {NavLink} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 
 export const Locations = () => {
     const {fetchLocations, changeLocationsFilter} = useActions(locationsActions);
@@ -197,13 +197,13 @@ export const Locations = () => {
                     Reset filter
                 </button>
                 <div className="grid grid-cols-4 gap-5">
-                    {locations.map(({id, name, type, url, residents, dimension}) =>
-                        <NavLink to={`/location/${id}`} key={id}>
+                    {locations.map(({id, name, type}) =>
+                        <Link to={`/locations/${id}`} key={id}>
                             <div className="cursor-pointer text-center h-[115px] rounded shadow-md flex flex-col items-center justify-center bg-[#FAFAFA] p-3 transition duration-700 ease-in-out hover:shadow-2xl">
-                                <h3 className="leading-5 font-medium mb-1">{name}</h3>
-                                <p className="text-gray-400 font-medium">{type}</p>
+                                <h3 className="leading-5 font-medium mb-1 text-[#081F32]">{name}</h3>
+                                <p className="font-medium text-[#6E798C]">{type}</p>
                             </div>
-                        </NavLink>
+                        </Link>
                     )}
                 </div>
             </div>

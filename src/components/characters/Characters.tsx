@@ -3,7 +3,7 @@ import {useActions, useAppSelector, useDebounce} from '../../hooks/hooks';
 import {charactersActions} from './charactersReducer';
 import {Pagination} from '../pagination/Pagination';
 import Logo from '../../assets/img/logo_name.png';
-import {NavLink} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import {Preloader} from '../preloader/Preloader';
 
 export const Characters = () => {
@@ -155,13 +155,13 @@ export const Characters = () => {
             </button>
             <div className="grid grid-cols-4 gap-5">
                 {characters?.map(({id, name, image, species}) =>
-                    <div key={id} className="rounded shadow-md h-[270px] cursor-pointer transition duration-700 ease-in-out hover:shadow-2xl">
-                        <NavLink to={`/characters/${id}`}>
+                    <div key={id} className="rounded shadow-md cursor-pointer transition duration-700 ease-in-out hover:shadow-2xl">
+                        <Link to={`/characters/${id}`}>
                             <img src={image} alt="Photo" className="h-[190px] w-[100%] object-cover rounded-t"/>
-                        </NavLink>
+                        </Link>
                         <div className="p-4">
-                            <h3 className="font-medium">{name}</h3>
-                            <p>{species}</p>
+                            <h3 className="font-medium text-[#081F32]">{name}</h3>
+                            <p className="text-[#6E798C]">{species}</p>
                         </div>
                     </div>
                 )}

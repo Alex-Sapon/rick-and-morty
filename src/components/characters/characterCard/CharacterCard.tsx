@@ -1,8 +1,9 @@
-import {useNavigate, useParams} from 'react-router-dom';
+import {NavLink, useNavigate, useParams} from 'react-router-dom';
 import {useEffect} from 'react';
 import {useActions, useAppSelector} from '../../../hooks/hooks';
 import {charactersActions} from '../charactersReducer';
 import {Preloader} from '../../preloader/Preloader';
+import {getId} from '../../../assets/utils/getId';
 
 export const CharacterCard = () => {
     const {fetchCharactersItem} = useActions(charactersActions);
@@ -15,7 +16,6 @@ export const CharacterCard = () => {
         image,
         species,
         status,
-        url,
         episode,
         location,
         origin,
@@ -39,8 +39,9 @@ export const CharacterCard = () => {
     return (
         <div className="relative h-[88vh]">
             <span className="flex items-center cursor-pointer absolute left-0" onClick={() => navigate(-1)}>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
+                     stroke="currentColor" className="w-6 h-6">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/>
                 </svg>
                 <span className="ml-2 font-bold text-lg">GO BACK</span>
             </span>
@@ -68,22 +69,31 @@ export const CharacterCard = () => {
                             <b>Origin</b>
                             <span className="text-gray-500 flex justify-between">
                                 {origin ? origin.name : ''}
-                                <svg className="w-6 h-6 cursor-pointer" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                                </svg>
+                                <NavLink to={`/locations/${getId(origin?.url)}`}>
+                                    <svg className="w-6 h-6 cursor-pointer" xmlns="http://www.w3.org/2000/svg"
+                                         fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round"
+                                              d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+                                    </svg>
+                                </NavLink>
                             </span>
                         </p>
                         <p className="flex flex-col p-2 border-b-2 border-b-emerald-500">
                             <b>Type</b>
-                            <span className="text-gray-500">{type ? type : "no type"}</span>
+                            <span className="text-gray-500">{type ? type : 'no type'}</span>
                         </p>
                         <p className="flex flex-col p-2">
                             <b>Location</b>
                             <span className="text-gray-500 flex justify-between">
                                 {location ? location.name : ''}
-                                <svg className="w-6 h-6 cursor-pointer" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                                </svg>
+                                <NavLink to={`/locations/${getId(location?.url)}`}>
+                                    <svg
+                                        className="w-6 h-6 cursor-pointer" xmlns="http://www.w3.org/2000/svg"
+                                        fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round"
+                                              d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+                                    </svg>
+                                </NavLink>
                             </span>
                         </p>
                     </ul>

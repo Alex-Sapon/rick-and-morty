@@ -15,7 +15,7 @@ export const App = () => {
             <Header/>
             <section className="container max-w-5xl mx-auto mt-8 px-2 grow">
                 <Routes>
-                    <Route path={PATH.HOME} element={<Navigate to={'/characters'}/>}/>
+                    <Route path={PATH.HOME} element={<Navigate to={PATH.CHARACTERS}/>}/>
                     <Route path={PATH.CHARACTERS} element={<Characters/>}/>
                     <Route path={PATH.CHARACTERS_CARD} element={<CharacterCard/>}/>
                     <Route path={PATH.LOCATIONS} element={<Locations/>}/>

@@ -1,6 +1,7 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {api, Character, Info, Location, LocationFilter} from '../../api/api';
 import {RootState} from '../app/store';
+import {getId} from '../../assets/utils/getId';
 
 const fetchLocations = createAsyncThunk<Info<Location[]>, void, { rejectValue: string }>
 ('locations/fetchLocations', async (_, {rejectWithValue, getState}) => {
@@ -18,12 +19,11 @@ const fetchLocationsItem = createAsyncThunk<Location<Character[]>, { id: number 
     try {
         const result = await api.getLocationItem(id);
 
-        const residentsUrl = (result.residents as string[]).map(async (resident) => {
-            const id = Number(resident.replace(/\D/gi, ''));
-            return await api.getCharactersItem(id);
+        const residentsResponse = result.residents.map(async (residentUrl) => {
+            return await api.getCharactersItem(getId(residentUrl));
         })
 
-        const residents = await Promise.all(residentsUrl);
+        const residents = await Promise.all(residentsResponse);
 
         return {...result, residents};
 
