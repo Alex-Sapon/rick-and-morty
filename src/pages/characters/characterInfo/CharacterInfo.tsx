@@ -27,7 +27,7 @@ export const CharacterInfo = () => {
     const {id} = useParams<'id'>();
 
     useEffect(() => {
-        if (id) {
+        if (id && Number(id)) {
             fetchCharactersItem(id);
         }
     }, [id, fetchCharactersItem])
@@ -70,7 +70,7 @@ export const CharacterInfo = () => {
                                 <b>Origin</b>
                                 <span className="text-gray-500 flex justify-between">{origin ? origin.name : ''}</span>
                             </div>
-                            <NavLink to={`/locations/${getId(origin?.url)}`}>
+                            <NavLink to={origin?.url && `/locations/${getId(origin?.url)}`}>
                                 <button className="bg-[#3d4451] transition-all rounded">
                                     <svg className="h-6 w-6 fill-amber-50 md:h-7 md:w-7"
                                          xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
@@ -90,7 +90,7 @@ export const CharacterInfo = () => {
                                     {location ? location.name : ''}
                                 </span>
                             </div>
-                            <NavLink to={`/locations/${getId(location?.url)}`}>
+                            <NavLink to={location?.url && `/locations/${getId(location?.url)}`}>
                                 <button className="bg-[#3d4451] transition-all rounded">
                                     <svg className="h-6 w-6 fill-amber-50 hover:h-7-w-7 md:h-7 md:w-7"
                                          xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
@@ -103,12 +103,22 @@ export const CharacterInfo = () => {
                 </div>
                 <div>
                     <h3 className="text-gray-500 font-medium text-lg mb-3 p-2">Episodes</h3>
-                    <ul>
+                    <ul className="grid gap-3">
                         {episode?.map(({id, episode, name, air_date}) =>
-                            <div key={id}>
-                                <p>{episode}</p>
-                                <p>{name}</p>
-                                <p>{air_date}</p>
+                            <div key={id} className="flex items-center justify-between p-2 rounded p-2 border-2 border-gray-300 bg-base-100">
+                                <div className="flex flex-col">
+                                    <b>{episode}</b>
+                                    <span className="text-gray-500 flex justify-between">{name}</span>
+                                    <span className="text-gray-500 flex justify-between">{air_date}</span>
+                                </div>
+                                <NavLink to={`/episode/${id}`}>
+                                    <button className="bg-[#3d4451] transition-all rounded">
+                                        <svg className="h-6 w-6 fill-amber-50 hover:h-7-w-7 md:h-7 md:w-7"
+                                             xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                            <path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z"/>
+                                        </svg>
+                                    </button>
+                                </NavLink>
                             </div>
                         )}
                     </ul>

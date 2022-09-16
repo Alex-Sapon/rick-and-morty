@@ -16,11 +16,12 @@ export const App = () => {
                 <Routes>
                     <Route path={PATH.HOME} element={<Navigate to={PATH.CHARACTERS}/>}/>
                     <Route path={PATH.CHARACTERS} element={<Characters/>}/>
-                    <Route path={PATH.CHARACTERS_CARD} element={<CharacterInfo/>}/>
+                    <Route path={PATH.CHARACTERS_INFO} element={<CharacterInfo/>}/>
                     <Route path={PATH.LOCATIONS} element={<Locations/>}/>
-                    <Route path={PATH.LOCATION_CARD} element={<LocationsInfo/>}/>
+                    <Route path={PATH.LOCATION_INFO} element={<LocationsInfo/>}/>
                     <Route path={PATH.EPISODE} element={<Episodes/>}/>
-                    <Route path={PATH.EPISODE_CARD} element={<EpisodeInfo/>}/>
+                    <Route path={PATH.EPISODE_INFO} element={<EpisodeInfo/>}/>
+                    <Route path={PATH.PAGE_NOT_FOUND} element={<div>Page not found</div>}/>
                 </Routes>
             </section>
             <Footer/>

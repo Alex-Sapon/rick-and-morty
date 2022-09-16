@@ -153,15 +153,15 @@ export const Characters = () => {
             >
                 Reset filter
             </button>
-            <div className="grid grid-cols-4 gap-5">
-                {characters.map(character => <CharacterCard key={character.id} {...character}/>)}
+            <div className="grid grid-cols-4 gap-5 min-h-[52vh]">
+                {characters?.map(character => <CharacterCard key={character.id} {...character}/>)}
             </div>
             <Pagination
                 page={page!}
                 paginateBack={onPrevPageClick}
                 paginateFront={onNextPageClick}
                 postsPerPage={20}
-                totalPosts={count!}
+                totalPosts={count ? count : 1}
             />
         </>
     )

@@ -1,9 +1,10 @@
 export enum PATH {
     HOME = '/',
     CHARACTERS = '/characters',
-    CHARACTERS_CARD = '/characters/:id',
+    CHARACTERS_INFO = '/characters/:id',
     LOCATIONS = '/locations',
-    LOCATION_CARD = '/locations/:id',
+    LOCATION_INFO = '/locations/:id',
     EPISODE = '/episode',
-    EPISODE_CARD = '/episode/:id',
+    EPISODE_INFO = '/episode/:id',
+    PAGE_NOT_FOUND = '/*',
 }

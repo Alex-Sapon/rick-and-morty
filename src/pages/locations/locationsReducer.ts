@@ -19,18 +19,16 @@ const fetchLocationsItem = createAsyncThunk<Location<Character[]>, string, { rej
     try {
         const result = await api.getLocationItem(id);
 
-        // const residentsResponse = result.residents.map(async (residentUrl) => {
-        //     return await api.getCharactersItem(getId(residentUrl));
-        // })
-        //
-        // const residents = await Promise.all(residentsResponse);
+        if (result.residents.length) {
+            const residentsId = result.residents.map(residentsUrl => getId(residentsUrl));
+            const residentsRes = await api.getCharactersItem(residentsId.join(','));
 
-        const residentsId = result.residents.map(residentsUrl => getId(residentsUrl));
-        const residentsRes = await api.getCharactersItem(residentsId.join(','));
+            const residents = Array.isArray(residentsRes) ? residentsRes : [residentsRes];
 
-        const residents = Array.isArray(residentsRes) ? residentsRes : [residentsRes];
+            return {...result, residents};
+        }
 
-        return {...result, residents};
+        return {...result, residents: []};
     } catch (e) {
         return rejectWithValue((e as Error).message);
     }

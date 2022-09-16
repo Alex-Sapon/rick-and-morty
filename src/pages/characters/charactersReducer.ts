@@ -19,13 +19,17 @@ const fetchCharactersItem = createAsyncThunk<Character<Episode[]>, string, { rej
     try {
         const result = await api.getCharactersItem(id);
 
-        const resultsId = result.episode.map(episodeUrl => getId(episodeUrl));
+        if (result.episode.length) {
+            const resultsId = result.episode.map(episodeUrl => getId(episodeUrl));
 
-        const episodeRes = await api.getEpisodeItem(resultsId.join(','))
+            const episodeRes = await api.getEpisodeItem(resultsId.join(','))
 
-        const episode = Array.isArray(episodeRes) ? episodeRes : [episodeRes];
+            const episode = Array.isArray(episodeRes) ? episodeRes : [episodeRes];
 
-        return {...result, episode};
+            return {...result, episode};
+        }
+
+       return {...result, episode: []};
     } catch (e) {
         return rejectWithValue((e as Error).message);
     }

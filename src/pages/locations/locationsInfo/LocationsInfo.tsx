@@ -19,7 +19,7 @@ export const LocationsInfo = () => {
     const dimension = useAppSelector(state => state.locationsPage.location.dimension);
 
     useEffect(() => {
-        if (id) {
+        if (id && Number(id)) {
             fetchLocationsItem(id);
         }
     }, [id, fetchLocationsItem])
@@ -49,8 +49,11 @@ export const LocationsInfo = () => {
                 </div>
             </div>
             <h3 className="text-[#6E798C] font-medium text-2xl mb-3 p-2">Residents</h3>
-            <ul className="grid grid-cols-4 gap-5">
-                {residents?.map(resident => <CharacterCard key={resident.id} {...resident}/>)}
+            <ul className="grid grid-cols-4 gap-5 relative">
+                {residents?.length
+                    ? residents.map(resident => <CharacterCard key={resident.id} {...resident}/>)
+                    : <div className="text-3xl absolute top-5 left-[50%] translate-x-[-50%]">Residents not found...</div>
+                    }
             </ul>
         </div>
     )
