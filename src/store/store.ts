@@ -1,6 +1,6 @@
 import {configureStore} from '@reduxjs/toolkit';
 import thunk from 'redux-thunk';
-import {charactersSlice} from '../components/characters/charactersReducer';
+import {charactersSlice} from '../pages/characters/charactersReducer';
 import {combineReducers} from 'redux';
 
 const rootReducer = combineReducers({

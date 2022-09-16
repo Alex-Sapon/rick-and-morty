@@ -1,10 +1,11 @@
-import {Link, useNavigate, useParams} from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import {useActions, useAppSelector} from '../../../hooks/hooks';
 import {useEffect} from 'react';
-import {Preloader} from '../../preloader/Preloader';
+import {Preloader} from '../../../components/preloader/Preloader';
 import {episodeActions} from '../episodesReducer';
+import {CharacterCard} from '../../../components/characterCard';
 
-export const EpisodeCard = () => {
+export const EpisodeInfo = () => {
     const {fetchEpisodeItem} = useActions(episodeActions);
 
     const navigate = useNavigate();
@@ -18,8 +19,8 @@ export const EpisodeCard = () => {
     const characters = useAppSelector(state => state.episodesPage.episode.characters);
 
     useEffect(() => {
-        if (Number(id)) {
-            fetchEpisodeItem({id: Number(id)});
+        if (id) {
+            fetchEpisodeItem(id);
         }
     }, [id, fetchEpisodeItem])
 
@@ -28,7 +29,7 @@ export const EpisodeCard = () => {
     }
 
     return (
-        <div className="relative pb-8">
+        <div className="relative pb-8 min-h-[88vh]">
             <span className="flex items-center cursor-pointer absolute left-0" onClick={() => navigate(-1)}>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
                      stroke="currentColor" className="w-6 h-6">
@@ -49,18 +50,7 @@ export const EpisodeCard = () => {
             </div>
             <h3 className="text-[#6E798C] font-medium text-2xl mb-3 p-2">Cast</h3>
             <ul className="grid grid-cols-4 gap-5">
-                {characters?.map(({id, name, image, species}) =>
-                    <div key={id}
-                         className="rounded shadow-md cursor-pointer transition duration-700 ease-in-out hover:shadow-2xl">
-                        <Link to={`/characters/${id}`}>
-                            <img src={image} alt="Photo" className="h-[190px] w-[100%] object-cover rounded-t"/>
-                            <div className="p-4">
-                                <h3 className="font-medium text-[#081F32]">{name}</h3>
-                                <p className="font-medium text-[#6E798C]">{species}</p>
-                            </div>
-                        </Link>
-                    </div>
-                )}
+                {characters?.map(character => <CharacterCard key={character.id} {...character}/>)}
             </ul>
         </div>
     )

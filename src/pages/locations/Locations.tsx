@@ -1,9 +1,9 @@
-import {Pagination} from '../pagination/Pagination';
+import {Pagination} from '../../components/pagination';
 import {useActions, useAppSelector, useDebounce} from '../../hooks/hooks';
 import {ChangeEvent, useEffect, useState} from 'react';
 import Logo from '../../assets/img/bg-locations.png';
 import {locationsActions} from './locationsReducer';
-import {Link} from 'react-router-dom';
+import {InfoCard} from '../../components/InfoCard';
 
 export const Locations = () => {
     const {fetchLocations, changeLocationsFilter} = useActions(locationsActions);
@@ -58,7 +58,7 @@ export const Locations = () => {
 
     useEffect(() => {
         changeLocationsFilter({page: 1, name: debouncedValue, dimension, type});
-    }, [debouncedValue, changeLocationsFilter])
+    }, [debouncedValue, changeLocationsFilter, dimension, type])
 
     useEffect(() => {
         fetchLocations();
@@ -182,7 +182,8 @@ export const Locations = () => {
                             <option value="Replacement Dimension">Replacement Dimension</option>
                             <option value="Cromulon Dimension">Cromulon Dimension</option>
                             <option value="Cronenberg Dimension">Cronenberg Dimension</option>
-                            <option value="Giant Telepathic Spiders Dimension">Giant Telepathic Spiders Dimension</option>
+                            <option value="Giant Telepathic Spiders Dimension">Giant Telepathic Spiders Dimension
+                            </option>
                             <option value="Testicle Monster Dimension">Testicle Monster Dimension</option>
                             <option value="Fantasy Dimension">Fantasy Dimension</option>
                             <option value="Testicle Monster Dimension">Testicle Monster Dimension</option>
@@ -197,14 +198,7 @@ export const Locations = () => {
                     Reset filter
                 </button>
                 <div className="grid grid-cols-4 gap-5">
-                    {locations.map(({id, name, type}) =>
-                        <Link to={`/locations/${id}`} key={id}>
-                            <div className="cursor-pointer text-center h-[115px] rounded shadow-md flex flex-col items-center justify-center bg-[#FAFAFA] p-3 transition duration-700 ease-in-out hover:shadow-2xl">
-                                <h3 className="leading-5 font-medium mb-1 text-[#081F32]">{name}</h3>
-                                <p className="font-medium text-[#6E798C]">{type}</p>
-                            </div>
-                        </Link>
-                    )}
+                    {locations.map(location => <InfoCard key={location.id} path="locations" {...location}/>)}
                 </div>
             </div>
             <Pagination

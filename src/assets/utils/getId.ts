@@ -2,11 +2,10 @@ export const getId = (url: string) => {
     if (url) {
         const id = Number(url.replace(/\D/gi, ''));
         if (id) {
-            return id;
+            return String(id);
         }
-        return null;
-
+        return '';
     }
 
-    return null;
+    return '';
 }

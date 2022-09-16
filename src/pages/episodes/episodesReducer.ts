@@ -1,7 +1,7 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {api, Character, Episode, EpisodeFilter, Info} from '../../api/api';
-import {RootState} from '../app/store';
-import {getId} from '../../assets/utils/getId';
+import {RootState} from '../../components/app/store';
+import {getId} from '../../assets';
 
 const fetchEpisode = createAsyncThunk<Info<Episode[]>, void, { rejectValue: string }>
 ('episode/fetchEpisodes', async (_, {rejectWithValue, getState}) => {
@@ -14,16 +14,16 @@ const fetchEpisode = createAsyncThunk<Info<Episode[]>, void, { rejectValue: stri
     }
 })
 
-const fetchEpisodeItem = createAsyncThunk<Episode<Character[]>, { id: number}, { rejectValue: string }>
-('episode/fetchEpisodeItem', async ({id}, {rejectWithValue}) => {
+const fetchEpisodeItem = createAsyncThunk<Episode<Character[]>, string, { rejectValue: string }>
+('episode/fetchEpisodeItem', async (id, {rejectWithValue}) => {
     try {
         const result = await api.getEpisodeItem(id);
 
-        const charactersResponse = result.characters.map(async (characterUrl) => {
-            return await api.getCharactersItem(getId(characterUrl));
-        })
+        const resultId = result.characters.map(characterUrl => getId(characterUrl));
 
-        const characters = await Promise.all(charactersResponse);
+        const charactersRes = await api.getCharactersItem(resultId.join(','));
+
+        const characters = Array.isArray(charactersRes) ? charactersRes : [charactersRes];
 
         return {...result, characters};
     } catch (e) {

@@ -1,3 +1,3 @@
 export {Episodes} from './Episodes';
-export {EpisodeCard} from './episodeCard/EpisodeCard';
+export {EpisodeInfo} from './episodeInfo/EpisodeInfo';
 export {episodeActions, episodesReducer} from './episodesReducer';

@@ -1,7 +1,7 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {api, Character, Info, Location, LocationFilter} from '../../api/api';
-import {RootState} from '../app/store';
-import {getId} from '../../assets/utils/getId';
+import {RootState} from '../../components/app/store';
+import {getId} from '../../assets';
 
 const fetchLocations = createAsyncThunk<Info<Location[]>, void, { rejectValue: string }>
 ('locations/fetchLocations', async (_, {rejectWithValue, getState}) => {
@@ -14,16 +14,21 @@ const fetchLocations = createAsyncThunk<Info<Location[]>, void, { rejectValue: s
     }
 })
 
-const fetchLocationsItem = createAsyncThunk<Location<Character[]>, { id: number }, { rejectValue: string }>
-('locations/fetchLocationsItem', async ({id}, {rejectWithValue}) => {
+const fetchLocationsItem = createAsyncThunk<Location<Character[]>, string, { rejectValue: string }>
+('locations/fetchLocationsItem', async (id, {rejectWithValue}) => {
     try {
         const result = await api.getLocationItem(id);
 
-        const residentsResponse = result.residents.map(async (residentUrl) => {
-            return await api.getCharactersItem(getId(residentUrl));
-        })
+        // const residentsResponse = result.residents.map(async (residentUrl) => {
+        //     return await api.getCharactersItem(getId(residentUrl));
+        // })
+        //
+        // const residents = await Promise.all(residentsResponse);
 
-        const residents = await Promise.all(residentsResponse);
+        const residentsId = result.residents.map(residentsUrl => getId(residentsUrl));
+        const residentsRes = await api.getCharactersItem(residentsId.join(','));
+
+        const residents = Array.isArray(residentsRes) ? residentsRes : [residentsRes];
 
         return {...result, residents};
     } catch (e) {

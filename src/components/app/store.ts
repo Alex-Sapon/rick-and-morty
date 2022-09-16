@@ -1,9 +1,9 @@
 import {configureStore} from '@reduxjs/toolkit';
 import thunk from 'redux-thunk';
 import {combineReducers} from 'redux';
-import {charactersReducer} from '../characters/charactersReducer';
-import {locationsReducer} from '../locations/locationsReducer';
-import {episodesReducer} from '../episodes';
+import {charactersReducer} from '../../pages/characters/charactersReducer';
+import {locationsReducer} from '../../pages/locations';
+import {episodesReducer} from '../../pages/episodes';
 
 const rootReducer = combineReducers({
     charactersPage: charactersReducer,

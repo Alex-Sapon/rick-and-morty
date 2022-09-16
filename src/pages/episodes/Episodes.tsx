@@ -1,9 +1,9 @@
 import Logo from '../../assets/img/logo_eyes.png';
-import {Link} from 'react-router-dom';
 import {ChangeEvent, useEffect, useState} from 'react';
 import {useActions, useAppSelector, useDebounce} from '../../hooks/hooks';
 import {episodeActions} from './episodesReducer';
-import {Pagination} from '../pagination/Pagination';
+import {Pagination} from '../../components/pagination';
+import {InfoCard} from '../../components/InfoCard';
 
 export const Episodes = () => {
     const {fetchEpisode, changeEpisodeFilter} = useActions(episodeActions);
@@ -79,16 +79,7 @@ export const Episodes = () => {
                     </div>
                 </div>
                 <div className="grid grid-cols-4 gap-5">
-                    {episodes.map(({id, name, episode, air_date}) =>
-                        <Link to={`/episode/${id}`} key={id}>
-                            <div
-                                className="cursor-pointer text-center h-[115px] rounded shadow-md flex flex-col items-center justify-center bg-[#FAFAFA] p-3 transition duration-700 ease-in-out hover:shadow-2xl">
-                                <h3 className="leading-5 font-medium mb-1 text-[#081F32]">{name}</h3>
-                                <p className="font-medium text-[#6E798C]">{air_date}</p>
-                                <p className="font-medium text-[#6E798C]">{episode}</p>
-                            </div>
-                        </Link>
-                    )}
+                    {episodes.map(episode => <InfoCard key={episode.id} path="episode" {...episode}/>)}
                 </div>
             </div>
             <Pagination

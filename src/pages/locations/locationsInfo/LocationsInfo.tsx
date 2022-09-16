@@ -1,10 +1,11 @@
 import {useActions, useAppSelector} from '../../../hooks/hooks';
 import {locationsActions} from '../locationsReducer';
-import {Link, useNavigate, useParams} from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import {useEffect} from 'react';
-import {Preloader} from '../../preloader/Preloader';
+import {Preloader} from '../../../components/preloader/Preloader';
+import {CharacterCard} from '../../../components/characterCard';
 
-export const LocationsCard = () => {
+export const LocationsInfo = () => {
     const {fetchLocationsItem} = useActions(locationsActions);
 
     const navigate = useNavigate();
@@ -18,8 +19,8 @@ export const LocationsCard = () => {
     const dimension = useAppSelector(state => state.locationsPage.location.dimension);
 
     useEffect(() => {
-        if (Number(id)) {
-            fetchLocationsItem({id: Number(id)});
+        if (id) {
+            fetchLocationsItem(id);
         }
     }, [id, fetchLocationsItem])
 
@@ -28,7 +29,7 @@ export const LocationsCard = () => {
     }
 
     return (
-        <div className="relative pb-8">
+        <div className="relative pb-8 min-h-[88vh]">
             <span className="flex items-center cursor-pointer absolute left-0" onClick={() => navigate(-1)}>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
                      stroke="currentColor" className="w-6 h-6">
@@ -49,18 +50,7 @@ export const LocationsCard = () => {
             </div>
             <h3 className="text-[#6E798C] font-medium text-2xl mb-3 p-2">Residents</h3>
             <ul className="grid grid-cols-4 gap-5">
-                {residents?.map(({id, name, image, species}) =>
-                    <div key={id}
-                         className="rounded shadow-md cursor-pointer transition duration-700 ease-in-out hover:shadow-2xl">
-                        <Link to={`/characters/${id}`}>
-                            <img src={image} alt="Photo" className="h-[190px] w-[100%] object-cover rounded-t"/>
-                            <div className="p-4">
-                                <h3 className="font-medium text-[#081F32]">{name}</h3>
-                                <p className="font-medium text-[#6E798C]">{species}</p>
-                            </div>
-                        </Link>
-                    </div>
-                )}
+                {residents?.map(resident => <CharacterCard key={resident.id} {...resident}/>)}
             </ul>
         </div>
     )

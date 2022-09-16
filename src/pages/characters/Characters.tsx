@@ -1,10 +1,10 @@
 import {ChangeEvent, useEffect, useState} from 'react';
 import {useActions, useAppSelector, useDebounce} from '../../hooks/hooks';
 import {charactersActions} from './charactersReducer';
-import {Pagination} from '../pagination/Pagination';
+import {Pagination} from '../../components/pagination';
 import Logo from '../../assets/img/logo_name.png';
-import {Link} from 'react-router-dom';
-import {Preloader} from '../preloader/Preloader';
+import {Preloader} from '../../components/preloader/Preloader';
+import {CharacterCard} from '../../components/characterCard';
 
 export const Characters = () => {
     const {fetchCharacters, changeCharactersFilter} = useActions(charactersActions);
@@ -65,7 +65,7 @@ export const Characters = () => {
 
     useEffect(() => {
         changeCharactersFilter({name: debouncedValue, gender, page: 1, species, status});
-    }, [debouncedValue, changeCharactersFilter])
+    }, [debouncedValue, changeCharactersFilter, gender, species, status])
 
     useEffect(() => {
         fetchCharacters();
@@ -76,7 +76,7 @@ export const Characters = () => {
     }
 
     return (
-        <div>
+        <>
             <div className="h-[200px] mb-[20px] mx-[auto]">
                 <img className="mx-[auto]" src={Logo} alt="Rick_and_Morty"/>
             </div>
@@ -154,17 +154,7 @@ export const Characters = () => {
                 Reset filter
             </button>
             <div className="grid grid-cols-4 gap-5">
-                {characters?.map(({id, name, image, species}) =>
-                    <div key={id} className="rounded shadow-md cursor-pointer transition duration-700 ease-in-out hover:shadow-2xl">
-                        <Link to={`/characters/${id}`}>
-                            <img src={image} alt="Photo" className="h-[190px] w-[100%] object-cover rounded-t"/>
-                        </Link>
-                        <div className="p-4">
-                            <h3 className="font-medium text-[#081F32]">{name}</h3>
-                            <p className="text-[#6E798C]">{species}</p>
-                        </div>
-                    </div>
-                )}
+                {characters.map(character => <CharacterCard key={character.id} {...character}/>)}
             </div>
             <Pagination
                 page={page!}
@@ -173,6 +163,6 @@ export const Characters = () => {
                 postsPerPage={20}
                 totalPosts={count!}
             />
-        </div>
+        </>
     )
 }

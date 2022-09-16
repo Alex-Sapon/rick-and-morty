@@ -1,6 +1,7 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {api, Character, CharacterFilter, Info} from '../../api/api';
-import {RootState} from '../app/store';
+import {api, Character, CharacterFilter, Episode, Info} from '../../api/api';
+import {RootState} from '../../components/app/store';
+import {getId} from '../../assets';
 
 const fetchCharacters = createAsyncThunk<Info<Character[]>, void, { rejectValue: string }>
 ('characters/fetchCharacters', async (_, {rejectWithValue, getState}) => {
@@ -13,10 +14,18 @@ const fetchCharacters = createAsyncThunk<Info<Character[]>, void, { rejectValue:
     }
 })
 
-const fetchCharactersItem = createAsyncThunk<Character, { id: number }, { rejectValue: string }>
-('characters/fetchCharactersItem', async ({id}, {rejectWithValue}) => {
+const fetchCharactersItem = createAsyncThunk<Character<Episode[]>, string, { rejectValue: string }>
+('characters/fetchCharactersItem', async (id, {rejectWithValue}) => {
     try {
-        return await api.getCharactersItem(id);
+        const result = await api.getCharactersItem(id);
+
+        const resultsId = result.episode.map(episodeUrl => getId(episodeUrl));
+
+        const episodeRes = await api.getEpisodeItem(resultsId.join(','))
+
+        const episode = Array.isArray(episodeRes) ? episodeRes : [episodeRes];
+
+        return {...result, episode};
     } catch (e) {
         return rejectWithValue((e as Error).message);
     }
@@ -32,7 +41,7 @@ export const charactersSlice = createSlice({
         },
         isLoading: false,
         error: '',
-        character: {} as Character,
+        character: {} as Character<Episode[]>,
     } as InitialStateType,
     reducers: {
         changeCharactersFilter(state, action: PayloadAction<CharacterFilter>) {
@@ -73,7 +82,7 @@ export const charactersActions = {fetchCharacters, changeCharactersFilter, fetch
 type InitialStateType = {
     filter: CharacterFilter
     isLoading: boolean
-    error: string
+    error: string | null
     data: Info<Character[]>
-    character: Character
+    character: Character<Episode[]>
 }

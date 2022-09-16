@@ -6,7 +6,7 @@ export const api = {
 
         return await fetch(`${BASE_URL}${CHARACTERS}`).then(res => res.json()) as Info<Character[]>;
     },
-    async getCharactersItem(id: number | null) {
+    async getCharactersItem(id: string) {
         return await fetch(`${BASE_URL}character/${id}`).then(res => res.json()) as Character;
     },
     async getLocation({page, name, dimension, type}: LocationFilter) {
@@ -14,7 +14,7 @@ export const api = {
 
         return await fetch(`${BASE_URL}${LOCATION}`).then(res => res.json()) as Info<Location[]>;
     },
-    async getLocationItem(id: number) {
+    async getLocationItem(id: string) {
         return await fetch(`${BASE_URL}location/${id}`).then(res => res.json()) as Location;
     },
     async getEpisode({page, name}: EpisodeFilter) {
@@ -22,7 +22,7 @@ export const api = {
 
         return await fetch(`${BASE_URL}${EPISODE}`).then(res => res.json()) as Info<Episode[]>;
     },
-    async getEpisodeItem(id: number) {
+    async getEpisodeItem(id: string) {
         return await fetch(`${BASE_URL}episode/${id}`).then(res => res.json()) as Episode;
     },
 }
@@ -80,7 +80,7 @@ export interface EpisodeFilter extends Pick<CharacterFilter, 'name' | 'page'> {
     episode?: string
 }
 
-export interface Character extends ResourceBase {
+export interface Character<T = string[]> extends ResourceBase {
     status: 'Dead' | 'Alive' | 'unknown'
     species: string
     type: string
@@ -88,7 +88,7 @@ export interface Character extends ResourceBase {
     origin: CharacterLocation
     location: CharacterLocation
     image: string
-    episode: string[]
+    episode: T
 }
 
 export interface Location<T = string[]> extends ResourceBase {
