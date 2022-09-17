@@ -1,9 +1,9 @@
 import {ChangeEvent, useEffect, useState} from 'react';
-import {useActions, useAppSelector, useDebounce} from '../../hooks/hooks';
+import {useActions, useAppSelector, useDebounce} from '../../hooks';
 import {charactersActions} from './charactersReducer';
 import {Pagination} from '../../components/pagination';
 import Logo from '../../assets/img/logo_name.png';
-import {Preloader} from '../../components/preloader/Preloader';
+import {Preloader} from '../../components/preloader';
 import {CharacterCard} from '../../components/characterCard';
 
 export const Characters = () => {
@@ -153,9 +153,9 @@ export const Characters = () => {
             >
                 Reset filter
             </button>
-            <div className="grid grid-cols-4 gap-5 min-h-[52vh]">
+            <ul className="grid grid-cols-4 gap-5 min-h-[52vh]">
                 {characters?.map(character => <CharacterCard key={character.id} {...character}/>)}
-            </div>
+            </ul>
             <Pagination
                 page={page!}
                 paginateBack={onPrevPageClick}

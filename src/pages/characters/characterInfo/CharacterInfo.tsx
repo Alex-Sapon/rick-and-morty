@@ -1,8 +1,8 @@
 import {NavLink, useNavigate, useParams} from 'react-router-dom';
 import {useEffect} from 'react';
-import {useActions, useAppSelector} from '../../../hooks/hooks';
+import {useActions, useAppSelector} from '../../../hooks';
 import {charactersActions} from '../charactersReducer';
-import {Preloader} from '../../../components/preloader/Preloader';
+import {Preloader} from '../../../components/preloader';
 import {getId} from '../../../assets';
 
 export const CharacterInfo = () => {
@@ -10,18 +10,15 @@ export const CharacterInfo = () => {
 
     const navigate = useNavigate();
 
-    const {
-        gender,
-        name,
-        image,
-        species,
-        status,
-        episode,
-        location,
-        origin,
-        type
-    } = useAppSelector(state => state.charactersPage.character);
-
+    const gender = useAppSelector(state => state.charactersPage.character.gender);
+    const name = useAppSelector(state => state.charactersPage.character.name);
+    const image = useAppSelector(state => state.charactersPage.character.image);
+    const species = useAppSelector(state => state.charactersPage.character.species);
+    const status = useAppSelector(state => state.charactersPage.character.status);
+    const episode = useAppSelector(state => state.charactersPage.character.episode);
+    const location = useAppSelector(state => state.charactersPage.character.location);
+    const origin = useAppSelector(state => state.charactersPage.character.origin);
+    const type = useAppSelector(state => state.charactersPage.character.type);
     const isLoading = useAppSelector(state => state.charactersPage.isLoading);
 
     const {id} = useParams<'id'>();
@@ -46,7 +43,8 @@ export const CharacterInfo = () => {
                 <span className="ml-2 font-bold text-lg">GO BACK</span>
             </span>
             <div className="h-[300px] mb-6">
-                <img className="bg-gray-300 h-[100%] mx-[auto] rounded-lg shadow-md bg-cover bg-center" src={image} alt="LogoCard"/>
+                <img className="bg-gray-300 h-[100%] mx-[auto] rounded-lg shadow-md bg-cover bg-center" src={image}
+                     alt="LogoCard"/>
             </div>
             <h2 className="font-bold text-5xl text-center mb-5">{name}</h2>
             <div className="grid grid-cols-2 gap-8">
@@ -70,7 +68,7 @@ export const CharacterInfo = () => {
                                 <b>Origin</b>
                                 <span className="text-gray-500 flex justify-between">{origin ? origin.name : ''}</span>
                             </div>
-                            <NavLink to={origin?.url && `/locations/${getId(origin?.url)}`}>
+                            <NavLink to={origin?.url ? `/locations/${getId(origin?.url)}` : ''}>
                                 <button className="bg-[#3d4451] transition-all rounded">
                                     <svg className="h-6 w-6 fill-amber-50 md:h-7 md:w-7"
                                          xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
@@ -83,14 +81,15 @@ export const CharacterInfo = () => {
                             <b>Type</b>
                             <span className="text-gray-500">{type ? type : 'no type'}</span>
                         </div>
-                        <div className="flex items-center justify-between p-2 rounded p-2 border-2 border-gray-300 bg-base-100">
+                        <div
+                            className="flex items-center justify-between p-2 rounded p-2 border-2 border-gray-300 bg-base-100">
                             <div className="flex flex-col">
                                 <b>Location</b>
                                 <span className="text-gray-500 flex justify-between">
                                     {location ? location.name : ''}
                                 </span>
                             </div>
-                            <NavLink to={location?.url && `/locations/${getId(location?.url)}`}>
+                            <NavLink to={location?.url ? `/locations/${getId(location?.url)}` : ''}>
                                 <button className="bg-[#3d4451] transition-all rounded">
                                     <svg className="h-6 w-6 fill-amber-50 hover:h-7-w-7 md:h-7 md:w-7"
                                          xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
@@ -103,9 +102,10 @@ export const CharacterInfo = () => {
                 </div>
                 <div>
                     <h3 className="text-gray-500 font-medium text-lg mb-3 p-2">Episodes</h3>
-                    <ul className="grid gap-3">
+                    <ul className="h-[50vh] overflow-hidden overflow-y-auto items-start">
                         {episode?.map(({id, episode, name, air_date}) =>
-                            <div key={id} className="flex items-center justify-between p-2 rounded p-2 border-2 border-gray-300 bg-base-100">
+                            <div key={id}
+                                 className="flex items-center justify-between p-2 rounded mb-3 border-2 border-gray-300 bg-base-100">
                                 <div className="flex flex-col">
                                     <b>{episode}</b>
                                     <span className="text-gray-500 flex justify-between">{name}</span>
@@ -114,7 +114,8 @@ export const CharacterInfo = () => {
                                 <NavLink to={`/episode/${id}`}>
                                     <button className="bg-[#3d4451] transition-all rounded">
                                         <svg className="h-6 w-6 fill-amber-50 hover:h-7-w-7 md:h-7 md:w-7"
-                                             xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                             xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                             viewBox="0 0 24 24">
                                             <path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z"/>
                                         </svg>
                                     </button>

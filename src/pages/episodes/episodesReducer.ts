@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {api, Character, Episode, EpisodeFilter, Info} from '../../api/api';
+import {api, Character, Episode, EpisodeFilter, Info} from '../../api';
 import {RootState} from '../../components/app/store';
 import {getId} from '../../assets';
 

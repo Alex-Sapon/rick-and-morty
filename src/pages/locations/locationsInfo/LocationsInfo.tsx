@@ -1,8 +1,8 @@
-import {useActions, useAppSelector} from '../../../hooks/hooks';
+import {useActions, useAppSelector} from '../../../hooks';
 import {locationsActions} from '../locationsReducer';
 import {useNavigate, useParams} from 'react-router-dom';
 import {useEffect} from 'react';
-import {Preloader} from '../../../components/preloader/Preloader';
+import {Preloader} from '../../../components/preloader';
 import {CharacterCard} from '../../../components/characterCard';
 
 export const LocationsInfo = () => {
