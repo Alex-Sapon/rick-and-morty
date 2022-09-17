@@ -7,6 +7,7 @@ import {Routes, Route, Navigate} from 'react-router-dom';
 import {LocationsInfo, Locations} from '../../pages/locations';
 import {Episodes, EpisodeInfo} from '../../pages/episodes';
 import {PATH} from '../../enums';
+import {ButtonTop} from '../buttonTop';
 
 export const App = () => {
     return (
@@ -25,6 +26,7 @@ export const App = () => {
                 </Routes>
             </section>
             <Footer/>
+            <ButtonTop/>
         </>
     )
 }

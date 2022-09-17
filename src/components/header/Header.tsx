@@ -9,7 +9,7 @@ export const Header = () => {
     }
 
     return (
-        <header className="h-[60px] flex justify-between p-2 shadow-md flex-none sticky top-0 bg-white z-10">
+        <header className="h-[60px] flex justify-between p-2 shadow-md flex-none sticky top-0 bg-white z-10 relative">
             <div className="container max-w-5xl mx-auto px-2 flex justify-between items-center">
                 <NavLink to={PATH.CHARACTERS}>
                     <img src={Logo} alt="Logo" className="w=[46px] h=[49px]"/>
