@@ -8,9 +8,7 @@ type PaginationPropsType = {
     paginateBack: () => void
 }
 
-export const Pagination = (props: PaginationPropsType) => {
-    const {postsPerPage, totalPosts, paginateFront, paginateBack, page} = props;
-
+export const Pagination = ({postsPerPage, totalPosts, paginateFront, paginateBack, page}: PaginationPropsType) => {
     const totalPage = Math.ceil(totalPosts / postsPerPage);
 
     return (

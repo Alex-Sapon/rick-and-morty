@@ -99,7 +99,7 @@ export const CharacterInfo = () => {
                 </div>
                 <div>
                     <h3 className="text-gray-500 font-medium text-lg mb-3 p-2">Episodes</h3>
-                    <ul className="h-[50vh] overflow-hidden overflow-y-auto items-start">
+                    <ul className="h-[50vh] overflow-hidden overflow-y-auto items-start pr-2">
                         {episode?.map(episodeItem => <EpisodeCard key={episodeItem.id} {...episodeItem}/>)}
                     </ul>
                 </div>

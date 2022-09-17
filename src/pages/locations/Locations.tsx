@@ -5,20 +5,24 @@ import Logo from '../../assets/img/bg-locations.png';
 import {locationsActions} from './locationsReducer';
 import {InfoCard} from '../../components/InfoCard';
 import {dimensionOptions, typeOptions} from './data';
+import {
+    selectLocationCount, selectLocationFilterDimension, selectLocationFilterName, selectLocationFilterPage,
+    selectLocationFilterType, selectLocationNextPage, selectLocationPrevPage, selectLocationResults
+} from './selectors';
 
 export const Locations = () => {
     const {fetchLocations, changeLocationsFilter} = useActions(locationsActions);
 
     const [value, setValue] = useState('');
 
-    const locations = useAppSelector(state => state.locationsPage.data.results);
-    const count = useAppSelector(state => state.locationsPage.data.info?.count);
-    const prevPage = useAppSelector(state => state.locationsPage.data.info?.prev);
-    const nextPage = useAppSelector(state => state.locationsPage.data.info?.next);
-    const name = useAppSelector(state => state.locationsPage.filter.name);
-    const dimension = useAppSelector(state => state.locationsPage.filter.dimension);
-    const type = useAppSelector(state => state.locationsPage.filter.type);
-    const page = useAppSelector(state => state.locationsPage.filter.page);
+    const locations = useAppSelector(selectLocationResults);
+    const count = useAppSelector(selectLocationCount);
+    const prevPage = useAppSelector(selectLocationPrevPage);
+    const nextPage = useAppSelector(selectLocationNextPage);
+    const name = useAppSelector(selectLocationFilterName);
+    const dimension = useAppSelector(selectLocationFilterDimension);
+    const type = useAppSelector(selectLocationFilterType);
+    const page = useAppSelector(selectLocationFilterPage);
 
     const onPrevPageClick = () => {
         if (prevPage) {
@@ -36,10 +40,6 @@ export const Locations = () => {
                 changeLocationsFilter({page: valueNextPage, name, dimension, type});
             }
         }
-    }
-
-    const onValueChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setValue(e.currentTarget.value);
     }
 
     const onTypeSelect = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -66,7 +66,7 @@ export const Locations = () => {
     }, [fetchLocations, page, name, dimension, type])
 
     return (
-        <div>
+        <>
             <div className="h-[81vh]">
                 <div className="h-[200px] mb-[20px] mx-[auto]">
                     <img className="mx-[auto]" src={Logo} alt="Rick_and_Morty"/>
@@ -86,7 +86,7 @@ export const Locations = () => {
                             </span>
                             <input
                                 value={value}
-                                onChange={onValueChange}
+                                onChange={(e) => setValue(e.currentTarget.value)}
                                 className="w-[325px] h-[45px] placeholder:italic placeholder:text-slate-400 block bg-white w-full border border-slate-300 rounded-md py-1 pl-9 pr-3 shadow-sm focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 sm:text-sm"
                                 placeholder="Filter by name..."
                                 type="text"
@@ -132,6 +132,6 @@ export const Locations = () => {
                 postsPerPage={20}
                 totalPosts={count!}
             />
-        </div>
+        </>
     )
 }
