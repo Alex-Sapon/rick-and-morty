@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {api, Character, CharacterFilter, Episode, Info} from '../../api/api';
+import {rmAPI, Character, CharacterFilter, Episode, Info} from '../../api';
 import {RootState} from '../../components/app/store';
 import {getId} from '../../assets';
 
@@ -8,7 +8,7 @@ const fetchCharacters = createAsyncThunk<Info<Character[]>, void, { rejectValue:
     const {status, gender, species, page, type, name} = (getState() as RootState).charactersPage.filter;
 
     try {
-        return await api.getCharacters({status, gender, species, page, type, name});
+        return await rmAPI.getCharacters({status, gender, species, page, type, name});
     } catch (e) {
         return rejectWithValue((e as Error).message);
     }
@@ -17,12 +17,12 @@ const fetchCharacters = createAsyncThunk<Info<Character[]>, void, { rejectValue:
 const fetchCharactersItem = createAsyncThunk<Character<Episode[]>, string, { rejectValue: string }>
 ('characters/fetchCharactersItem', async (id, {rejectWithValue}) => {
     try {
-        const result = await api.getCharactersItem(id);
+        const result = await rmAPI.getCharactersItem(id);
 
         if (result.episode.length) {
             const resultsId = result.episode.map(episodeUrl => getId(episodeUrl));
 
-            const episodeRes = await api.getEpisodeItem(resultsId.join(','))
+            const episodeRes = await rmAPI.getEpisodeItem(resultsId.join(','))
 
             const episode = Array.isArray(episodeRes) ? episodeRes : [episodeRes];
 

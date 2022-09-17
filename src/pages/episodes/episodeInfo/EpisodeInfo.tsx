@@ -1,9 +1,12 @@
 import {useNavigate, useParams} from 'react-router-dom';
-import {useActions, useAppSelector} from '../../../hooks/hooks';
+import {useActions, useAppSelector} from '../../../hooks';
 import {useEffect} from 'react';
-import {Preloader} from '../../../components/preloader/Preloader';
+import {Preloader} from '../../../components/preloader';
 import {episodeActions} from '../episodesReducer';
-import {CharacterCard} from '../../../components/characterCard';
+import {CharacterCard} from '../../characters/characterCard';
+import {
+    selectEpisode, selectEpisodeAirDate, selectEpisodeCharacters, selectEpisodeIsLoading, selectEpisodeName
+} from '../selectors';
 
 export const EpisodeInfo = () => {
     const {fetchEpisodeItem} = useActions(episodeActions);
@@ -12,11 +15,11 @@ export const EpisodeInfo = () => {
 
     const {id} = useParams<'id'>();
 
-    const isLoading = useAppSelector(state => state.episodesPage.isLoading);
-    const episode = useAppSelector(state => state.episodesPage.episode.episode);
-    const name = useAppSelector(state => state.episodesPage.episode.name);
-    const airDate = useAppSelector(state => state.episodesPage.episode.air_date);
-    const characters = useAppSelector(state => state.episodesPage.episode.characters);
+    const isLoading = useAppSelector(selectEpisodeIsLoading);
+    const episode = useAppSelector(selectEpisode);
+    const name = useAppSelector(selectEpisodeName);
+    const airDate = useAppSelector(selectEpisodeAirDate);
+    const characters = useAppSelector(selectEpisodeCharacters);
 
     useEffect(() => {
         if (id) {
@@ -31,10 +34,7 @@ export const EpisodeInfo = () => {
     return (
         <div className="relative pb-8 min-h-[88vh]">
             <span className="flex items-center cursor-pointer absolute left-0" onClick={() => navigate(-1)}>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
-                     stroke="currentColor" className="w-6 h-6">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/>
-                </svg>
+                <span className="pb-1 font-medium text-2xl rotate-180">&#10140;</span>
                 <span className="ml-2 font-bold text-lg">GO BACK</span>
             </span>
             <h2 className="font-bold text-4xl text-center mb-10 text-[#081F32]">{name}</h2>

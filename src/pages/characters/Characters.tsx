@@ -4,23 +4,29 @@ import {charactersActions} from './charactersReducer';
 import {Pagination} from '../../components/pagination';
 import Logo from '../../assets/img/logo_name.png';
 import {Preloader} from '../../components/preloader';
-import {CharacterCard} from '../../components/characterCard';
+import {CharacterCard} from './characterCard';
+import {
+    selectCharacterCount, selectCharacterFilterGender, selectCharacterFilterName, selectCharacterFilterNextPage,
+    selectCharacterFilterPage, selectCharacterFilterPrevPage, selectCharacterFilterSpecies, selectCharacterFilterStatus,
+    selectCharacterIsLoading, selectCharacterResults
+} from './selectors';
+import {genderOptions, speciesOptions, statusOptions} from './data';
 
 export const Characters = () => {
     const {fetchCharacters, changeCharactersFilter} = useActions(charactersActions);
 
     const [value, setValue] = useState('');
 
-    const characters = useAppSelector(state => state.charactersPage.data.results);
-    const count = useAppSelector(state => state.charactersPage.data.info?.count);
-    const gender = useAppSelector(state => state.charactersPage.filter.gender);
-    const name = useAppSelector(state => state.charactersPage.filter.name);
-    const species = useAppSelector(state => state.charactersPage.filter.species);
-    const status = useAppSelector(state => state.charactersPage.filter.status);
-    const page = useAppSelector(state => state.charactersPage.filter.page);
-    const nextPage = useAppSelector(state => state.charactersPage.data.info?.next);
-    const prevPage = useAppSelector(state => state.charactersPage.data.info?.prev);
-    const isLoading = useAppSelector(state => state.charactersPage.isLoading);
+    const characters = useAppSelector(selectCharacterResults);
+    const count = useAppSelector(selectCharacterCount);
+    const gender = useAppSelector(selectCharacterFilterGender);
+    const name = useAppSelector(selectCharacterFilterName);
+    const species = useAppSelector(selectCharacterFilterSpecies);
+    const status = useAppSelector(selectCharacterFilterStatus);
+    const page = useAppSelector(selectCharacterFilterPage);
+    const nextPage = useAppSelector(selectCharacterFilterNextPage);
+    const prevPage = useAppSelector(selectCharacterFilterPrevPage);
+    const isLoading = useAppSelector(selectCharacterIsLoading);
 
     const onValueChange = (e: ChangeEvent<HTMLInputElement>) => {
         setValue(e.currentTarget.value);
@@ -110,13 +116,7 @@ export const Characters = () => {
                         onChange={onSpeciesSelect}
                         className="w-[240px] h-[45px] bg-white border border-slate-300 rounded-md py-1 px-3 shadow-sm focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 sm:text-sm"
                     >
-                        <option value=""/>
-                        <option value="Human">Human</option>
-                        <option value="Humanoid">Humanoid</option>
-                        <option value="Robot">Robot</option>
-                        <option value="Alien">Alien</option>
-                        <option value="Disease">Disease</option>
-                        <option value="Unknown">Unknown</option>
+                        {speciesOptions.map(({id, value}) => <option key={id} value={value}>{value}</option>)}
                     </select>
                 </div>
                 <div className="flex flex-col">
@@ -126,11 +126,7 @@ export const Characters = () => {
                         onChange={onGenderSelect}
                         className="w-[240px] h-[45px] bg-white border border-slate-300 rounded-md py-1 px-3 shadow-sm focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 sm:text-sm"
                     >
-                        <option value=""/>
-                        <option value="Female">Female</option>
-                        <option value="Male">Male</option>
-                        <option value="Genderless">Genderless</option>
-                        <option value="Unknown">Unknown</option>
+                        {genderOptions.map(({id, value}) => <option key={id} value={value}>{value}</option>)}
                     </select>
                 </div>
                 <div className="flex flex-col">
@@ -140,10 +136,7 @@ export const Characters = () => {
                         onChange={onStatusSelect}
                         className="w-[240px] h-[45px] bg-white border border-slate-300 rounded-md py-1 px-3 shadow-sm focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 sm:text-sm"
                     >
-                        <option value=""/>
-                        <option value="Alive">Alive</option>
-                        <option value="Dead">Dead</option>
-                        <option value="unknown">unknown</option>
+                        {statusOptions.map(({id, value}) => <option key={id} value={value}>{value}</option>)}
                     </select>
                 </div>
             </div>

@@ -1,6 +1,6 @@
 import {Link} from 'react-router-dom';
-import {setStatusStyles} from '../../assets';
-import {Character} from '../../api';
+import {setStatusStyles} from '../../../assets';
+import {Character} from '../../../api';
 
 export const CharacterCard = ({id, name, image, species, status}: Character) => (
     <Link to={`/characters/${id}`}

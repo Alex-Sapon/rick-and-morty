@@ -1,5 +1,5 @@
 import {Link} from 'react-router-dom';
-import {Episode, Location} from '../../api/api';
+import {Episode, Location} from '../../api';
 
 type InfoCardType = Partial<Location> & Partial<Episode> & {
     path: string

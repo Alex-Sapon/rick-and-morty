@@ -4,22 +4,28 @@ import {useActions, useAppSelector} from '../../../hooks';
 import {charactersActions} from '../charactersReducer';
 import {Preloader} from '../../../components/preloader';
 import {getId} from '../../../assets';
+import {
+    selectCharacterEpisode, selectCharacterGender, selectCharacterImage, selectCharacterIsLoading,
+    selectCharacterLocation, selectCharacterName, selectCharacterOrigin, selectCharacterSpecies,
+    selectCharacterStatus, selectCharacterType
+} from '../selectors';
+import {EpisodeCard} from '../../episodes/episodeCard/EpisodeCard';
 
 export const CharacterInfo = () => {
     const {fetchCharactersItem} = useActions(charactersActions);
 
     const navigate = useNavigate();
 
-    const gender = useAppSelector(state => state.charactersPage.character.gender);
-    const name = useAppSelector(state => state.charactersPage.character.name);
-    const image = useAppSelector(state => state.charactersPage.character.image);
-    const species = useAppSelector(state => state.charactersPage.character.species);
-    const status = useAppSelector(state => state.charactersPage.character.status);
-    const episode = useAppSelector(state => state.charactersPage.character.episode);
-    const location = useAppSelector(state => state.charactersPage.character.location);
-    const origin = useAppSelector(state => state.charactersPage.character.origin);
-    const type = useAppSelector(state => state.charactersPage.character.type);
-    const isLoading = useAppSelector(state => state.charactersPage.isLoading);
+    const gender = useAppSelector(selectCharacterGender);
+    const name = useAppSelector(selectCharacterName);
+    const image = useAppSelector(selectCharacterImage);
+    const species = useAppSelector(selectCharacterSpecies);
+    const status = useAppSelector(selectCharacterStatus);
+    const episode = useAppSelector(selectCharacterEpisode);
+    const location = useAppSelector(selectCharacterLocation);
+    const origin = useAppSelector(selectCharacterOrigin);
+    const type = useAppSelector(selectCharacterType);
+    const isLoading = useAppSelector(selectCharacterIsLoading);
 
     const {id} = useParams<'id'>();
 
@@ -35,11 +41,8 @@ export const CharacterInfo = () => {
 
     return (
         <div className="relative pb-8 min-h-[88vh]">
-            <span className="flex items-center cursor-pointer absolute left-0" onClick={() => navigate(-1)}>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
-                     stroke="currentColor" className="w-6 h-6">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/>
-                </svg>
+            <span className="flex items-center cursor-pointer absolute left-2" onClick={() => navigate(-1)}>
+                <span className="pb-1 font-medium text-2xl rotate-180">&#10140;</span>
                 <span className="ml-2 font-bold text-lg">GO BACK</span>
             </span>
             <div className="h-[300px] mb-6">
@@ -69,11 +72,8 @@ export const CharacterInfo = () => {
                                 <span className="text-gray-500 flex justify-between">{origin ? origin.name : ''}</span>
                             </div>
                             <NavLink to={origin?.url ? `/locations/${getId(origin?.url)}` : ''}>
-                                <button className="bg-[#3d4451] transition-all rounded">
-                                    <svg className="h-6 w-6 fill-amber-50 md:h-7 md:w-7"
-                                         xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                                        <path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z"/>
-                                    </svg>
+                                <button className="rounded bg-[#3d4451]">
+                                    <span className="text-white font-medium text-xl px-2">&#10095;</span>
                                 </button>
                             </NavLink>
                         </div>
@@ -90,11 +90,8 @@ export const CharacterInfo = () => {
                                 </span>
                             </div>
                             <NavLink to={location?.url ? `/locations/${getId(location?.url)}` : ''}>
-                                <button className="bg-[#3d4451] transition-all rounded">
-                                    <svg className="h-6 w-6 fill-amber-50 hover:h-7-w-7 md:h-7 md:w-7"
-                                         xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                                        <path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z"/>
-                                    </svg>
+                                <button className="rounded bg-[#3d4451]">
+                                    <span className="text-white text-xl px-2">&#10095;</span>
                                 </button>
                             </NavLink>
                         </div>
@@ -103,25 +100,7 @@ export const CharacterInfo = () => {
                 <div>
                     <h3 className="text-gray-500 font-medium text-lg mb-3 p-2">Episodes</h3>
                     <ul className="h-[50vh] overflow-hidden overflow-y-auto items-start">
-                        {episode?.map(({id, episode, name, air_date}) =>
-                            <div key={id}
-                                 className="flex items-center justify-between p-2 rounded mb-3 border-2 border-gray-300 bg-base-100">
-                                <div className="flex flex-col">
-                                    <b>{episode}</b>
-                                    <span className="text-gray-500 flex justify-between">{name}</span>
-                                    <span className="text-gray-500 flex justify-between">{air_date}</span>
-                                </div>
-                                <NavLink to={`/episode/${id}`}>
-                                    <button className="bg-[#3d4451] transition-all rounded">
-                                        <svg className="h-6 w-6 fill-amber-50 hover:h-7-w-7 md:h-7 md:w-7"
-                                             xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                             viewBox="0 0 24 24">
-                                            <path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z"/>
-                                        </svg>
-                                    </button>
-                                </NavLink>
-                            </div>
-                        )}
+                        {episode?.map(episodeItem => <EpisodeCard key={episodeItem.id} {...episodeItem}/>)}
                     </ul>
                 </div>
             </div>

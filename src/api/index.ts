@@ -1,4 +1,3 @@
-export {api} from './api';
-export type {
-    Character, CharacterFilter, Episode, EpisodeFilter, Info, Location, LocationFilter, CharacterLocation
-} from './api';
+export {rmAPI} from './rmAPI';
+export type { Episode, EpisodeFilter, Info, Location, LocationFilter, CharacterFilter, Character, CharacterLocation } from './rmAPI';
+

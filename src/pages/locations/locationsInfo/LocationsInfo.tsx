@@ -3,7 +3,14 @@ import {locationsActions} from '../locationsReducer';
 import {useNavigate, useParams} from 'react-router-dom';
 import {useEffect} from 'react';
 import {Preloader} from '../../../components/preloader';
-import {CharacterCard} from '../../../components/characterCard';
+import {CharacterCard} from '../../characters/characterCard';
+import {
+    selectLocationDimension,
+    selectLocationIsLoading,
+    selectLocationName,
+    selectLocationResidents,
+    selectLocationType
+} from '../selectors';
 
 export const LocationsInfo = () => {
     const {fetchLocationsItem} = useActions(locationsActions);
@@ -12,11 +19,11 @@ export const LocationsInfo = () => {
 
     const {id} = useParams<'id'>();
 
-    const isLoading = useAppSelector(state => state.locationsPage.isLoading);
-    const name = useAppSelector(state => state.locationsPage.location.name);
-    const type = useAppSelector(state => state.locationsPage.location.type);
-    const residents = useAppSelector(state => state.locationsPage.location.residents);
-    const dimension = useAppSelector(state => state.locationsPage.location.dimension);
+    const isLoading = useAppSelector(selectLocationIsLoading);
+    const name = useAppSelector(selectLocationName);
+    const type = useAppSelector(selectLocationType);
+    const residents = useAppSelector(selectLocationResidents);
+    const dimension = useAppSelector(selectLocationDimension);
 
     useEffect(() => {
         if (id && Number(id)) {
@@ -31,10 +38,7 @@ export const LocationsInfo = () => {
     return (
         <div className="relative pb-8 min-h-[88vh]">
             <span className="flex items-center cursor-pointer absolute left-0" onClick={() => navigate(-1)}>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
-                     stroke="currentColor" className="w-6 h-6">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/>
-                </svg>
+                <span className="pb-1 font-medium text-2xl rotate-180">&#10140;</span>
                 <span className="ml-2 font-bold text-lg">GO BACK</span>
             </span>
             <h2 className="font-bold text-4xl text-center mb-10 text-[#081F32]">{name}</h2>
@@ -53,7 +57,7 @@ export const LocationsInfo = () => {
                 {residents?.length
                     ? residents.map(resident => <CharacterCard key={resident.id} {...resident}/>)
                     : <div className="text-3xl absolute top-5 left-[50%] translate-x-[-50%]">Residents not found...</div>
-                    }
+                }
             </ul>
         </div>
     )

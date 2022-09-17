@@ -1,29 +1,40 @@
 const BASE_URL = `https://rickandmortyapi.com/api/`;
 
-export const api = {
-    async getCharacters({page, name, status, gender, species}: CharacterFilter) {
+function api<T>(url: string): Promise<T> {
+    return fetch(BASE_URL + url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(response.statusText);
+            }
+
+            return response.json() as Promise<T>;
+        })
+}
+
+export const rmAPI = {
+    getCharacters({page, name, status, gender, species}: CharacterFilter) {
         const CHARACTERS = `character/?page=${page}&name=${name}&status=${status}&gender=${gender}&species=${species}`;
 
-        return await fetch(`${BASE_URL}${CHARACTERS}`).then(res => res.json()) as Info<Character[]>;
+        return api<Info<Character[]>>(CHARACTERS);
     },
-    async getCharactersItem(id: string) {
-        return await fetch(`${BASE_URL}character/${id}`).then(res => res.json()) as Character;
+    getCharactersItem(id: string) {
+        return api<Character>(`character/${id}`);
     },
-    async getLocation({page, name, dimension, type}: LocationFilter) {
+    getLocation({page, name, dimension, type}: LocationFilter): Promise<Info<Location[]>> {
         const LOCATION = `location?page=${page}&name=${name}&dimension=${dimension}&type=${type}`;
 
-        return await fetch(`${BASE_URL}${LOCATION}`).then(res => res.json()) as Info<Location[]>;
+        return api<Info<Location[]>>(LOCATION);
     },
-    async getLocationItem(id: string) {
-        return await fetch(`${BASE_URL}location/${id}`).then(res => res.json()) as Location;
+    getLocationItem(id: string) {
+        return api<Location>(`location/${id}`);
     },
-    async getEpisode({page, name}: EpisodeFilter) {
+    getEpisode({page, name}: EpisodeFilter) {
         const EPISODE = `episode?page=${page}&name=${name}`;
 
-        return await fetch(`${BASE_URL}${EPISODE}`).then(res => res.json()) as Info<Episode[]>;
+        return api<Info<Episode[]>>(EPISODE);
     },
-    async getEpisodeItem(id: string) {
-        return await fetch(`${BASE_URL}episode/${id}`).then(res => res.json()) as Episode;
+    getEpisodeItem(id: string) {
+        return api<Episode>(`episode/${id}`);
     },
 }
 

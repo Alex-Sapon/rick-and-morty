@@ -11,13 +11,13 @@ export const Header = () => {
     return (
         <header className="h-[60px] flex justify-between p-2 shadow-md flex-none sticky top-0 bg-white z-10 relative">
             <div className="container max-w-5xl mx-auto px-2 flex justify-between items-center">
-                <NavLink to={PATH.CHARACTERS}>
-                    <img src={Logo} alt="Logo" className="w=[46px] h=[49px]"/>
+                <NavLink to={PATH.CHARACTERS} className="w-[46px] h-[49px] block">
+                    <img src={Logo} alt="Logo" className="h-[100%]"/>
                 </NavLink>
                 <nav className="text-lg font-bold">
-                    <NavLink to="/characters" className={active}>Characters</NavLink>
-                    <NavLink to="/locations" className={active}>Locations</NavLink>
-                    <NavLink to="/episode" className={active}>Episodes</NavLink>
+                    <NavLink to={PATH.CHARACTERS} className={active}>Characters</NavLink>
+                    <NavLink to={PATH.LOCATIONS} className={active}>Locations</NavLink>
+                    <NavLink to={PATH.EPISODE} className={active}>Episodes</NavLink>
                 </nav>
             </div>
         </header>
