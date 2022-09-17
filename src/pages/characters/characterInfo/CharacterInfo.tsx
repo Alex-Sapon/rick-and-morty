@@ -49,7 +49,7 @@ export const CharacterInfo = () => {
                 <img className="bg-gray-300 h-[100%] mx-[auto] rounded-lg shadow-md bg-cover bg-center" src={image}
                      alt="LogoCard"/>
             </div>
-            <h2 className="font-bold text-5xl text-center mb-5">{name}</h2>
+            <h2 className="font-bold text-5xl text-center mb-5 px-40">{name}</h2>
             <div className="grid grid-cols-2 gap-8">
                 <div>
                     <h3 className="text-gray-500 font-medium text-lg mb-3 p-2">Informations</h3>

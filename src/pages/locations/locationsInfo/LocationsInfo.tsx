@@ -41,7 +41,7 @@ export const LocationsInfo = () => {
                 <span className="pb-1 font-medium text-2xl rotate-180">&#10140;</span>
                 <span className="ml-2 font-bold text-lg">GO BACK</span>
             </span>
-            <h2 className="font-bold text-4xl text-center mb-10 text-[#081F32]">{name}</h2>
+            <h2 className="font-bold text-4xl text-center mb-10 text-[#081F32] px-52">{name}</h2>
             <div className="grid grid-cols-2 gap-5 text-center mb-7">
                 <div className="">
                     <h3 className="text-[#081F32] text-lg"><b>Type</b></h3>

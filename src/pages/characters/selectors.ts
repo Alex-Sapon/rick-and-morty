@@ -10,7 +10,6 @@ export const selectCharacterLocation = (state: RootState) => state.charactersPag
 export const selectCharacterOrigin = (state: RootState) => state.charactersPage.character.origin;
 export const selectCharacterType = (state: RootState) => state.charactersPage.character.type;
 export const selectCharacterIsLoading = (state: RootState) => state.charactersPage.isLoading;
-
 export const selectCharacterResults = (state: RootState) => state.charactersPage.data.results;
 export const selectCharacterCount = (state: RootState) => state.charactersPage.data.info?.count;
 export const selectCharacterFilterGender = (state: RootState) => state.charactersPage.filter.gender;
