@@ -49,7 +49,7 @@ export const EpisodeInfo = () => {
                 </div>
             </div>
             <h3 className="text-[#6E798C] font-medium text-2xl mb-3 p-2">Cast</h3>
-            <ul className="grid grid-cols-4 gap-5">
+            <ul className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
                 {characters?.map(character => <CharacterCard key={character.id} {...character}/>)}
             </ul>
         </div>

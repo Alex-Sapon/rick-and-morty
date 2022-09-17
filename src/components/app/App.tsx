@@ -12,7 +12,7 @@ import {ButtonTop} from '../buttonTop';
 export const App = () => (
     <>
         <Header/>
-        <section className="container max-w-5xl mx-auto mt-8 px-2 grow">
+        <section className="container max-w-5xl mx-auto mt-8 px-4 grow">
             <Routes>
                 <Route path={PATH.HOME} element={<Navigate to={PATH.CHARACTERS}/>}/>
                 <Route path={PATH.CHARACTERS} element={<Characters/>}/>

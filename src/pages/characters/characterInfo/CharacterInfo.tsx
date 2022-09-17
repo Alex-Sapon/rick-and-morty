@@ -45,12 +45,12 @@ export const CharacterInfo = () => {
                 <span className="pb-1 font-medium text-2xl rotate-180">&#10140;</span>
                 <span className="ml-2 font-bold text-lg">GO BACK</span>
             </span>
-            <div className="h-[300px] mb-6">
+            <div className="pt-12 h-[300px] mb-6 md:pt-0">
                 <img className="bg-gray-300 h-[100%] mx-[auto] rounded-lg shadow-md bg-cover bg-center" src={image}
                      alt="LogoCard"/>
             </div>
-            <h2 className="font-bold text-5xl text-center mb-5 px-40">{name}</h2>
-            <div className="grid grid-cols-2 gap-8">
+            <h2 className="font-bold text-3xl sm:text-4xl md:text-5xl text-center mb-5 md:px-40">{name}</h2>
+            <div className="grid gap-8 md:grid-cols-2 sm:grid-cols-1">
                 <div>
                     <h3 className="text-gray-500 font-medium text-lg mb-3 p-2">Informations</h3>
                     <ul className="grid gap-3">

@@ -81,34 +81,34 @@ export const Locations = () => {
 
     return (
         <>
-            <div className="h-[81vh]">
+            <div className="min-h-[81vh]">
                 <div className="h-[200px] mb-[20px] mx-[auto]">
                     <img className="mx-[auto]" src={Logo} alt="Rick_and_Morty"/>
                 </div>
-                <div className="flex justify-around items-center mb-5">
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-5">
                     <Input
                         value={value}
                         onChange={e => setValue(e.currentTarget.value)}
-                        className="w-[325px]"
+                        className="w-[100%]"
                         valueSpan="."
                         placeholder="Filter by name..."
                     />
-                    <div className="flex flex-col">
+                    <div className="flex flex-col w-[100%]">
                         <span className="col-span-1 p-1 text-gray-500 font-bold">Type</span>
                         <select
                             value={type}
                             onChange={onTypeSelect}
-                            className="w-[240px] h-[45px] bg-white border border-slate-300 rounded-md py-1 px-3 shadow-sm focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 sm:text-sm"
+                            className="h-[45px] bg-white border border-slate-300 rounded-md py-1 px-3 shadow-sm focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 sm:text-sm"
                         >
                             {typeOptions.map(({id, value}) => <option key={id} value={value}>{value}</option>)}
                         </select>
                     </div>
-                    <div className="flex flex-col">
+                    <div className="flex flex-col w-[100%]">
                         <span className="col-span-1 p-1 text-gray-500 font-bold">Dimension</span>
                         <select
                             value={dimension}
                             onChange={onDimensionSelect}
-                            className="w-[240px] h-[45px] bg-white border border-slate-300 rounded-md py-1 px-3 shadow-sm focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 sm:text-sm"
+                            className="h-[45px] bg-white border border-slate-300 rounded-md py-1 px-3 shadow-sm focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 sm:text-sm"
                         >
                             {dimensionOptions.map(({id, value}) => <option key={id} value={value}>{value}</option>)}
                             <option value="Unknown">Unknown</option>
@@ -120,7 +120,7 @@ export const Locations = () => {
                     className="py-2 px-3 bg-indigo-500 text-white text-sm font-semibold rounded-md shadow focus:outline-none mb-5">
                     Reset filter
                 </button>
-                <div className="grid grid-cols-4 gap-5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
                     {locations.map(location => <InfoCard key={location.id} path="locations" {...location}/>)}
                 </div>
             </div>
