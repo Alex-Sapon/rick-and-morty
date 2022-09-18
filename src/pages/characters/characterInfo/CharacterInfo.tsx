@@ -40,17 +40,17 @@ export const CharacterInfo = () => {
     }
 
     return (
-        <div className="relative pb-8 min-h-[88vh]">
-            <span className="flex items-center cursor-pointer absolute left-2" onClick={() => navigate(-1)}>
+        <div className="pb-8 min-h-[88vh]">
+            <div className="flex items-center cursor-pointer mb-5" onClick={() => navigate(-1)}>
                 <span className="pb-1 font-medium text-2xl rotate-180">&#10140;</span>
                 <span className="ml-2 font-bold text-lg">GO BACK</span>
-            </span>
-            <div className="pt-12 h-[300px] mb-6 md:pt-0">
+            </div>
+            <div className="h-[300px] mb-4">
                 <img className="bg-gray-300 h-[100%] mx-[auto] rounded-lg shadow-md bg-cover bg-center" src={image}
                      alt="LogoCard"/>
             </div>
-            <h2 className="font-bold text-3xl sm:text-4xl md:text-5xl text-center mb-5 md:px-40">{name}</h2>
-            <div className="grid gap-8 md:grid-cols-2 sm:grid-cols-1">
+            <h2 className="font-bold text-2xl sm:text-3xl md:text-4xl text-center mb-5 md:px-40">{name}</h2>
+            <div className="grid gap-8 md:grid-cols-2">
                 <div>
                     <h3 className="text-gray-500 font-medium text-lg mb-3 p-2">Informations</h3>
                     <ul className="grid gap-3">
@@ -67,7 +67,7 @@ export const CharacterInfo = () => {
                             <span className="text-gray-500">{species}</span>
                         </div>
                         <div className="flex items-center justify-between rounded p-2 border-2 border-gray-300">
-                            <div className="flex flex-col">
+                            <div className="flex flex-col mr-5">
                                 <b>Origin</b>
                                 <span className="text-gray-500 flex justify-between">{origin ? origin.name : ''}</span>
                             </div>
@@ -83,7 +83,7 @@ export const CharacterInfo = () => {
                         </div>
                         <div
                             className="flex items-center justify-between p-2 rounded p-2 border-2 border-gray-300 bg-base-100">
-                            <div className="flex flex-col">
+                            <div className="flex flex-col mr-5">
                                 <b>Location</b>
                                 <span className="text-gray-500 flex justify-between">
                                     {location ? location.name : ''}
@@ -99,7 +99,7 @@ export const CharacterInfo = () => {
                 </div>
                 <div>
                     <h3 className="text-gray-500 font-medium text-lg mb-3 p-2">Episodes</h3>
-                    <ul className="h-[50vh] overflow-hidden overflow-y-auto items-start pr-2">
+                    <ul className="sm:h-[50vh] sm:overflow-hidden sm:overflow-y-auto items-start sm:pr-2">
                         {episode?.map(episodeItem => <EpisodeCard key={episodeItem.id} {...episodeItem}/>)}
                     </ul>
                 </div>

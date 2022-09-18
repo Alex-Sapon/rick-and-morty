@@ -2,7 +2,7 @@ import {ChangeEvent, useEffect, useState} from 'react';
 import {useActions, useAppSelector, useDebounce} from '../../hooks';
 import {charactersActions} from './charactersReducer';
 import {Pagination} from '../../components/pagination';
-import Logo from '../../assets/img/logo_name.png';
+import Logo from '../../assets/img/logo_name.svg';
 import {Preloader} from '../../components/preloader';
 import {CharacterCard} from './characterCard';
 import {
