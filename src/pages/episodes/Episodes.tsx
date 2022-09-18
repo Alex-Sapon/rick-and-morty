@@ -1,13 +1,14 @@
 import Logo from '../../assets/img/logo_eyes.png';
 import {useEffect, useState} from 'react';
 import {useActions, useAppSelector, useDebounce} from '../../hooks';
-import {episodeActions} from './episodesReducer';
+import {episodeActions} from './reducer/episodesReducer';
 import {Pagination} from '../../components/pagination';
 import {InfoCard} from '../../components/InfoCard';
 import {Preloader} from '../../components/preloader';
 import {Input} from '../../components/input';
 import {
     selectEpisodeCount,
+    selectEpisodeError,
     selectEpisodeFilterName,
     selectEpisodeFilterPage,
     selectEpisodeIsLoading,
@@ -26,6 +27,7 @@ export const Episodes = () => {
     const name = useAppSelector(selectEpisodeFilterName);
     const page = useAppSelector(selectEpisodeFilterPage);
     const isLoading = useAppSelector(selectEpisodeIsLoading);
+    const error = useAppSelector(selectEpisodeError);
 
     const [value, setValue] = useState(name || '');
 
@@ -79,6 +81,7 @@ export const Episodes = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
                     {episodes.map(episode => <InfoCard key={episode.id} path="episode" {...episode}/>)}
                 </div>
+                {error && <div className="text-red-600 font-bold text-xl text-center my-3">{`Error! ${error}!`}</div>}
             </div>
             <Pagination
                 page={page!}

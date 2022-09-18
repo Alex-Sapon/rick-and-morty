@@ -1,7 +1,7 @@
 import {configureStore} from '@reduxjs/toolkit';
 import thunk from 'redux-thunk';
 import {combineReducers} from 'redux';
-import {charactersReducer} from '../../pages/characters/charactersReducer';
+import {charactersReducer} from '../../pages/characters/reducer/charactersReducer';
 import {locationsReducer} from '../../pages/locations';
 import {episodesReducer} from '../../pages/episodes';
 

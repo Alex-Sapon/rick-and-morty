@@ -1,7 +1,7 @@
 import {NavLink, useNavigate, useParams} from 'react-router-dom';
 import {useEffect} from 'react';
 import {useActions, useAppSelector} from '../../../hooks';
-import {charactersActions} from '../charactersReducer';
+import {charactersActions} from '../reducer/charactersReducer';
 import {Preloader} from '../../../components/preloader';
 import {getId} from '../../../assets';
 import {

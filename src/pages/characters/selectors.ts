@@ -19,3 +19,4 @@ export const selectCharacterFilterStatus = (state: RootState) => state.character
 export const selectCharacterFilterPage = (state: RootState) => state.charactersPage.filter.page;
 export const selectCharacterFilterNextPage = (state: RootState) => state.charactersPage.data.info?.next;
 export const selectCharacterFilterPrevPage = (state: RootState) => state.charactersPage.data.info?.prev;
+export const selectCharacterError = (state: RootState) => state.charactersPage.error;

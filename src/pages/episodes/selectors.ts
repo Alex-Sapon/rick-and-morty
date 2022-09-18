@@ -11,3 +11,4 @@ export const selectEpisodeNextPage = (state: RootState) => state.episodesPage.da
 export const selectEpisodeCount = (state: RootState) => state.episodesPage.data.info?.count;
 export const selectEpisodeFilterName = (state: RootState) => state.episodesPage.filter.name;
 export const selectEpisodeFilterPage = (state: RootState) => state.episodesPage.filter.page;
+export const selectEpisodeError = (state: RootState) => state.episodesPage.error;

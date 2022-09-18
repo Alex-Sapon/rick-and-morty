@@ -13,3 +13,4 @@ export const selectLocationFilterName = (state: RootState) => state.locationsPag
 export const selectLocationFilterDimension = (state: RootState) => state.locationsPage.filter.dimension;
 export const selectLocationFilterType = (state: RootState) => state.locationsPage.filter.type;
 export const selectLocationFilterPage = (state: RootState) => state.locationsPage.filter.page;
+export const selectLocationError = (state: RootState) => state.locationsPage.error;

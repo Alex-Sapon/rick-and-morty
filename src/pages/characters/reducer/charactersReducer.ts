@@ -1,7 +1,7 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {rmAPI, Character, CharacterFilter, Episode, Info} from '../../api';
-import {RootState} from '../../components/app/store';
-import {getId} from '../../assets';
+import {Character, CharacterFilter, Episode, Info, rmAPI} from '../../../api';
+import {RootState} from '../../../components/app/store';
+import {getId, isError} from '../../../assets';
 
 const fetchCharacters = createAsyncThunk<Info<Character[]>, void, { rejectValue: string }>
 ('characters/fetchCharacters', async (_, {rejectWithValue, getState}) => {
@@ -44,7 +44,7 @@ export const charactersSlice = createSlice({
             results: [],
         },
         isLoading: false,
-        error: '',
+        error: null,
         character: {} as Character<Episode[]>,
     } as InitialStateType,
     reducers: {
@@ -59,23 +59,21 @@ export const charactersSlice = createSlice({
             })
             .addCase(fetchCharacters.fulfilled, (state, action) => {
                 state.isLoading = false;
+                state.error = null;
                 state.data = action.payload;
-            })
-            .addCase(fetchCharacters.rejected, (state, action) => {
-                state.isLoading = false;
-                state.error = action.payload!;
             })
             .addCase(fetchCharactersItem.pending, (state) => {
                 state.isLoading = true;
             })
             .addCase(fetchCharactersItem.fulfilled, (state, action) => {
                 state.isLoading = false;
+                state.error = null;
                 state.character = action.payload;
             })
-            .addCase(fetchCharactersItem.rejected, (state, action) => {
-                state.isLoading = false;
-                state.error = action.payload!;
-            })
+            .addMatcher(isError, (state, action: PayloadAction<string>) => {
+            state.isLoading = false;
+            state.error = action.payload!;
+        })
     }
 })
 

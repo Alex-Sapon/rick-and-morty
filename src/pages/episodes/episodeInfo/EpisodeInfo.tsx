@@ -2,7 +2,7 @@ import {useNavigate, useParams} from 'react-router-dom';
 import {useActions, useAppSelector} from '../../../hooks';
 import {useEffect} from 'react';
 import {Preloader} from '../../../components/preloader';
-import {episodeActions} from '../episodesReducer';
+import {episodeActions} from '../reducer/episodesReducer';
 import {CharacterCard} from '../../characters/characterCard';
 import {
     selectEpisode, selectEpisodeAirDate, selectEpisodeCharacters, selectEpisodeIsLoading, selectEpisodeName

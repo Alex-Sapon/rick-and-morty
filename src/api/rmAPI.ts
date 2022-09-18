@@ -1,10 +1,10 @@
 const BASE_URL = `https://rickandmortyapi.com/api/`;
 
-function api<T>(url: string): Promise<T> {
+function getApi<T>(url: string): Promise<T> {
     return fetch(BASE_URL + url)
         .then(response => {
             if (!response.ok) {
-                throw new Error(response.statusText);
+                throw new Error(response.statusText ? response.statusText : 'Can\'t fetch data');
             }
 
             return response.json() as Promise<T>;
@@ -15,26 +15,26 @@ export const rmAPI = {
     getCharacters({page, name, status, gender, species}: CharacterFilter) {
         const CHARACTERS = `character/?page=${page}&name=${name}&status=${status}&gender=${gender}&species=${species}`;
 
-        return api<Info<Character[]>>(CHARACTERS);
+        return getApi<Info<Character[]>>(CHARACTERS);
     },
     getCharactersItem(id: string) {
-        return api<Character>(`character/${id}`);
+        return getApi<Character>(`character/${id}`);
     },
     getLocation({page, name, dimension, type}: LocationFilter): Promise<Info<Location[]>> {
         const LOCATION = `location?page=${page}&name=${name}&dimension=${dimension}&type=${type}`;
 
-        return api<Info<Location[]>>(LOCATION);
+        return getApi<Info<Location[]>>(LOCATION);
     },
     getLocationItem(id: string) {
-        return api<Location>(`location/${id}`);
+        return getApi<Location>(`location/${id}`);
     },
     getEpisode({page, name}: EpisodeFilter) {
         const EPISODE = `episode?page=${page}&name=${name}`;
 
-        return api<Info<Episode[]>>(EPISODE);
+        return getApi<Info<Episode[]>>(EPISODE);
     },
     getEpisodeItem(id: string) {
-        return api<Episode>(`episode/${id}`);
+        return getApi<Episode>(`episode/${id}`);
     },
 }
 

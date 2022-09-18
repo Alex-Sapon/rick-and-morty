@@ -2,11 +2,12 @@ import {Pagination} from '../../components/pagination';
 import {useActions, useAppSelector, useDebounce} from '../../hooks';
 import {ChangeEvent, useEffect, useState} from 'react';
 import Logo from '../../assets/img/bg-locations.png';
-import {locationsActions} from './locationsReducer';
+import {locationsActions} from './reducer/locationsReducer';
 import {InfoCard} from '../../components/InfoCard';
 import {dimensionOptions, typeOptions} from './data';
 import {
     selectLocationCount,
+    selectLocationError,
     selectLocationFilterDimension,
     selectLocationFilterName,
     selectLocationFilterPage,
@@ -31,6 +32,7 @@ export const Locations = () => {
     const type = useAppSelector(selectLocationFilterType);
     const page = useAppSelector(selectLocationFilterPage);
     const isLoading = useAppSelector(selectLocationIsLoading);
+    const error = useAppSelector(selectLocationError);
 
     const [value, setValue] = useState(name || '');
 
@@ -123,6 +125,7 @@ export const Locations = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
                     {locations.map(location => <InfoCard key={location.id} path="locations" {...location}/>)}
                 </div>
+                {error && <div className="text-red-600 font-bold text-xl text-center my-3">{`Error! ${error}!`}</div>}
             </div>
             <Pagination
                 page={page!}

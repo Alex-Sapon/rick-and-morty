@@ -1,7 +1,7 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {rmAPI, Character, Episode, EpisodeFilter, Info} from '../../api';
-import {RootState} from '../../components/app/store';
-import {getId} from '../../assets';
+import {rmAPI, Character, Episode, EpisodeFilter, Info} from '../../../api';
+import {RootState} from '../../../components/app/store';
+import {getId, isError} from '../../../assets';
 
 const fetchEpisode = createAsyncThunk<Info<Episode[]>, void, { rejectValue: string }>
 ('episode/fetchEpisodes', async (_, {rejectWithValue, getState}) => {
@@ -35,18 +35,20 @@ const fetchEpisodeItem = createAsyncThunk<Episode<Character[]>, string, { reject
     }
 })
 
+const initialState: InitialStateType = {
+    filter: {page: 1, name: '', episode: ''},
+    data: {
+        info: {count: 0, pages: 0, next: null, prev: null},
+        results: [],
+    },
+    episode: {} as Episode<Character[]>,
+    isLoading: false,
+    error: null,
+}
+
 const episodesSlice = createSlice({
     name: 'episode',
-    initialState: {
-        filter: {page: 1, name: '', episode: ''},
-        data: {
-            info: {count: 0, pages: 0, next: null, prev: null},
-            results: [],
-        },
-        episode: {} as Episode<Character[]>,
-        isLoading: false,
-        error: null,
-    } as InitialStateType,
+    initialState,
     reducers: {
         changeEpisodeFilter(state, action: PayloadAction<EpisodeFilter>) {
             state.filter = action.payload;
@@ -62,10 +64,6 @@ const episodesSlice = createSlice({
                 state.error = null;
                 state.data = action.payload;
             })
-            .addCase(fetchEpisode.rejected, (state, action) => {
-                state.isLoading = false;
-                state.error = action.payload!;
-            })
             .addCase(fetchEpisodeItem.pending, (state) => {
                 state.isLoading = true;
             })
@@ -74,7 +72,7 @@ const episodesSlice = createSlice({
                 state.error = null;
                 state.episode = action.payload;
             })
-            .addCase(fetchEpisodeItem.rejected, (state, action) => {
+            .addMatcher(isError, (state, action: PayloadAction<string>) => {
                 state.isLoading = false;
                 state.error = action.payload!;
             })

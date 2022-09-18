@@ -1,12 +1,13 @@
 import {ChangeEvent, useEffect, useState} from 'react';
 import {useActions, useAppSelector, useDebounce} from '../../hooks';
-import {charactersActions} from './charactersReducer';
+import {charactersActions} from './reducer/charactersReducer';
 import {Pagination} from '../../components/pagination';
 import Logo from '../../assets/img/logo_name.svg';
 import {Preloader} from '../../components/preloader';
 import {CharacterCard} from './characterCard';
 import {
     selectCharacterCount,
+    selectCharacterError,
     selectCharacterFilterGender,
     selectCharacterFilterName,
     selectCharacterFilterNextPage,
@@ -33,6 +34,7 @@ export const Characters = () => {
     const nextPage = useAppSelector(selectCharacterFilterNextPage);
     const prevPage = useAppSelector(selectCharacterFilterPrevPage);
     const isLoading = useAppSelector(selectCharacterIsLoading);
+    const error = useAppSelector(selectCharacterError);
 
     const [value, setValue] = useState(name || '');
 
@@ -139,6 +141,7 @@ export const Characters = () => {
                 <ul className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
                     {characters?.map(character => <CharacterCard key={character.id} {...character}/>)}
                 </ul>
+                {error && <div className="text-red-600 font-bold text-xl text-center my-3">{`Error! ${error}!`}</div>}
             </div>
             <Pagination
                 page={page!}

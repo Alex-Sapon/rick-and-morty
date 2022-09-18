@@ -1,5 +1,5 @@
 import {useActions, useAppSelector} from '../../../hooks';
-import {locationsActions} from '../locationsReducer';
+import {locationsActions} from '../reducer/locationsReducer';
 import {useNavigate, useParams} from 'react-router-dom';
 import {useEffect} from 'react';
 import {Preloader} from '../../../components/preloader';

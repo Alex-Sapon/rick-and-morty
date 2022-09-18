@@ -1,7 +1,7 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {rmAPI, Character, Info, Location, LocationFilter} from '../../api';
-import {RootState} from '../../components/app/store';
-import {getId} from '../../assets';
+import {Character, Info, Location, LocationFilter, rmAPI} from '../../../api';
+import {RootState} from '../../../components/app/store';
+import {getId, isError} from '../../../assets';
 
 const fetchLocations = createAsyncThunk<Info<Location[]>, void, { rejectValue: string }>
 ('locations/fetchLocations', async (_, {rejectWithValue, getState}) => {
@@ -18,7 +18,7 @@ const fetchLocationsItem = createAsyncThunk<Location<Character[]>, string, { rej
 ('locations/fetchLocationsItem', async (id, {rejectWithValue}) => {
     try {
         const result = await rmAPI.getLocationItem(id);
-
+        console.log(result)
         if (result.residents.length) {
             const residentsId = result.residents.map(residentsUrl => getId(residentsUrl));
             const residentsRes = await rmAPI.getCharactersItem(residentsId.join(','));
@@ -30,22 +30,25 @@ const fetchLocationsItem = createAsyncThunk<Location<Character[]>, string, { rej
 
         return {...result, residents: []};
     } catch (e) {
+        debugger
         return rejectWithValue((e as Error).message);
     }
 })
 
+const initialState: InitialStateType = {
+    filter: {page: 1, name: '', dimension: '', type: ''},
+    data: {
+        info: {count: 0, pages: 0, next: null, prev: null},
+        results: [],
+    },
+    location: {} as Location<Character[]>,
+    isLoading: false,
+    error: null,
+}
+
 const locationsSlice = createSlice({
     name: 'locations',
-    initialState: {
-        filter: {page: 1, name: '', dimension: '', type: ''},
-        data: {
-            info: {count: 0, pages: 0, next: null, prev: null},
-            results: [],
-        },
-        location: {} as Location<Character[]>,
-        isLoading: false,
-        error: null,
-    } as InitialStateType,
+    initialState,
     reducers: {
         changeLocationsFilter(state, action: PayloadAction<LocationFilter>) {
             state.filter = action.payload;
@@ -61,10 +64,6 @@ const locationsSlice = createSlice({
                 state.error = null;
                 state.data = action.payload;
             })
-            .addCase(fetchLocations.rejected, (state, action) => {
-                state.isLoading = false;
-                state.error = action.payload!;
-            })
             .addCase(fetchLocationsItem.pending, (state) => {
                 state.isLoading = true;
             })
@@ -73,7 +72,7 @@ const locationsSlice = createSlice({
                 state.error = null;
                 state.location = action.payload;
             })
-            .addCase(fetchLocationsItem.rejected, (state, action) => {
+            .addMatcher(isError, (state, action: PayloadAction<string>) => {
                 state.isLoading = false;
                 state.error = action.payload!;
             })
