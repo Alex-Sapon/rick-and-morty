@@ -1,7 +1,7 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {Character, Info, Location, LocationFilter, rmAPI} from '../../../api';
 import {RootState} from '../../../components/app/store';
-import {getId, isError} from '../../../assets';
+import {getErrorMessage, getId, isError, isPending} from '../../../assets';
 
 const fetchLocations = createAsyncThunk<Info<Location[]>, void, { rejectValue: string }>
 ('locations/fetchLocations', async (_, {rejectWithValue, getState}) => {
@@ -10,7 +10,7 @@ const fetchLocations = createAsyncThunk<Info<Location[]>, void, { rejectValue: s
     try {
         return await rmAPI.getLocation({type, name, page, dimension});
     } catch (e) {
-        return rejectWithValue((e as Error).message);
+        return rejectWithValue(getErrorMessage(e));
     }
 })
 
@@ -18,7 +18,6 @@ const fetchLocationsItem = createAsyncThunk<Location<Character[]>, string, { rej
 ('locations/fetchLocationsItem', async (id, {rejectWithValue}) => {
     try {
         const result = await rmAPI.getLocationItem(id);
-        console.log(result)
         if (result.residents.length) {
             const residentsId = result.residents.map(residentsUrl => getId(residentsUrl));
             const residentsRes = await rmAPI.getCharactersItem(residentsId.join(','));
@@ -30,8 +29,7 @@ const fetchLocationsItem = createAsyncThunk<Location<Character[]>, string, { rej
 
         return {...result, residents: []};
     } catch (e) {
-        debugger
-        return rejectWithValue((e as Error).message);
+        return rejectWithValue(getErrorMessage(e));
     }
 })
 
@@ -56,25 +54,23 @@ const locationsSlice = createSlice({
     },
     extraReducers: builder => {
         builder
-            .addCase(fetchLocations.pending, (state) => {
-                state.isLoading = true;
-            })
             .addCase(fetchLocations.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.error = null;
                 state.data = action.payload;
-            })
-            .addCase(fetchLocationsItem.pending, (state) => {
-                state.isLoading = true;
             })
             .addCase(fetchLocationsItem.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.error = null;
                 state.location = action.payload;
             })
+            .addMatcher(isPending, (state) => {
+                state.isLoading = true;
+                state.error = null;
+            })
             .addMatcher(isError, (state, action: PayloadAction<string>) => {
                 state.isLoading = false;
-                state.error = action.payload!;
+                state.error = action.payload;
             })
     }
 })

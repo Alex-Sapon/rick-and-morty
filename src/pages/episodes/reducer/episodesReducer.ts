@@ -1,7 +1,7 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {rmAPI, Character, Episode, EpisodeFilter, Info} from '../../../api';
+import {Character, Episode, EpisodeFilter, Info, rmAPI} from '../../../api';
 import {RootState} from '../../../components/app/store';
-import {getId, isError} from '../../../assets';
+import {getErrorMessage, getId, isError, isPending} from '../../../assets';
 
 const fetchEpisode = createAsyncThunk<Info<Episode[]>, void, { rejectValue: string }>
 ('episode/fetchEpisodes', async (_, {rejectWithValue, getState}) => {
@@ -10,7 +10,7 @@ const fetchEpisode = createAsyncThunk<Info<Episode[]>, void, { rejectValue: stri
     try {
         return await rmAPI.getEpisode({page, name});
     } catch (e) {
-        return rejectWithValue((e as Error).message);
+        return rejectWithValue(getErrorMessage(e));
     }
 })
 
@@ -31,7 +31,7 @@ const fetchEpisodeItem = createAsyncThunk<Episode<Character[]>, string, { reject
 
         return {...result, characters: []};
     } catch (e) {
-        return rejectWithValue((e as Error).message);
+        return rejectWithValue(getErrorMessage(e));
     }
 })
 
@@ -56,25 +56,23 @@ const episodesSlice = createSlice({
     },
     extraReducers: builder => {
         builder
-            .addCase(fetchEpisode.pending, (state) => {
-                state.isLoading = true;
-            })
             .addCase(fetchEpisode.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.error = null;
                 state.data = action.payload;
-            })
-            .addCase(fetchEpisodeItem.pending, (state) => {
-                state.isLoading = true;
             })
             .addCase(fetchEpisodeItem.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.error = null;
                 state.episode = action.payload;
             })
+            .addMatcher(isPending, (state) => {
+                state.isLoading = true;
+                state.error = null;
+            })
             .addMatcher(isError, (state, action: PayloadAction<string>) => {
                 state.isLoading = false;
-                state.error = action.payload!;
+                state.error = action.payload;
             })
     }
 })

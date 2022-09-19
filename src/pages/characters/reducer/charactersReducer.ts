@@ -1,20 +1,20 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {Character, CharacterFilter, Episode, Info, rmAPI} from '../../../api';
 import {RootState} from '../../../components/app/store';
-import {getId, isError} from '../../../assets';
+import {getErrorMessage, getId, isError, isPending} from '../../../assets';
 
-const fetchCharacters = createAsyncThunk<Info<Character[]>, void, { rejectValue: string }>
+export const fetchCharacters = createAsyncThunk<Info<Character[]>, void, { rejectValue: string, state: RootState }>
 ('characters/fetchCharacters', async (_, {rejectWithValue, getState}) => {
-    const {status, gender, species, page, type, name} = (getState() as RootState).charactersPage.filter;
+    const {status, gender, species, page, type, name} = getState().charactersPage.filter;
 
     try {
         return await rmAPI.getCharacters({status, gender, species, page, type, name});
     } catch (e) {
-        return rejectWithValue((e as Error).message);
+        return rejectWithValue(getErrorMessage(e));
     }
 })
 
-const fetchCharactersItem = createAsyncThunk<Character<Episode[]>, string, { rejectValue: string }>
+export const fetchCharactersItem = createAsyncThunk<Character<Episode[]>, string, { rejectValue: string }>
 ('characters/fetchCharactersItem', async (id, {rejectWithValue}) => {
     try {
         const result = await rmAPI.getCharactersItem(id);
@@ -31,7 +31,7 @@ const fetchCharactersItem = createAsyncThunk<Character<Episode[]>, string, { rej
 
        return {...result, episode: []};
     } catch (e) {
-        return rejectWithValue((e as Error).message);
+        return rejectWithValue(getErrorMessage(e));
     }
 })
 
@@ -54,26 +54,25 @@ export const charactersSlice = createSlice({
     },
     extraReducers: builder => {
         builder
-            .addCase(fetchCharacters.pending, (state) => {
-                state.isLoading = true;
-            })
             .addCase(fetchCharacters.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.error = null;
                 state.data = action.payload;
-            })
-            .addCase(fetchCharactersItem.pending, (state) => {
-                state.isLoading = true;
             })
             .addCase(fetchCharactersItem.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.error = null;
                 state.character = action.payload;
             })
+            .addMatcher(isPending, (state) => {
+                state.isLoading = true;
+                state.error = null;
+            })
             .addMatcher(isError, (state, action: PayloadAction<string>) => {
             state.isLoading = false;
-            state.error = action.payload!;
+            state.error = action.payload;
         })
+
     }
 })
 
@@ -81,7 +80,7 @@ export const charactersReducer = charactersSlice.reducer;
 const {changeCharactersFilter} = charactersSlice.actions;
 export const charactersActions = {fetchCharacters, changeCharactersFilter, fetchCharactersItem};
 
-type InitialStateType = {
+export type InitialStateType = {
     filter: CharacterFilter
     isLoading: boolean
     error: string | null

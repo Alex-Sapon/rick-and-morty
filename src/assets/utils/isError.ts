@@ -1,5 +1,3 @@
 import {AnyAction} from '@reduxjs/toolkit';
 
-export function isError(action: AnyAction) {
-    return action.type.endsWith('rejected');
-}
+export const isError = (action: AnyAction) => action.type.endsWith('rejected');
