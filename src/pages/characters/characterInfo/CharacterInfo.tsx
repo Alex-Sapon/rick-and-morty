@@ -42,8 +42,8 @@ export const CharacterInfo = () => {
     return (
         <div className="pb-8 min-h-[88vh]">
             <div className="flex items-center cursor-pointer mb-5" onClick={() => navigate(-1)}>
-                <span className="pb-1 font-medium text-2xl rotate-180 font-['Zapf_Dingbats']">&#10140;</span>
-                <span className="ml-2 font-bold text-lg">GO BACK</span>
+                <span className="sm:pb-1 font-medium sm:text-2xl rotate-180">&#10140;</span>
+                <span className="ml-2 font-bold sm:text-lg">GO BACK</span>
             </div>
             <div className="h-[300px] mb-4">
                 <img className="bg-gray-300 h-[100%] mx-[auto] rounded-lg shadow-md bg-cover bg-center" src={image}
@@ -73,7 +73,7 @@ export const CharacterInfo = () => {
                             </div>
                             <NavLink to={origin?.url ? `/locations/${getId(origin?.url)}` : ''}>
                                 <button className="rounded bg-[#3d4451]">
-                                    <span className="text-white font-medium text-xl px-2 font-['Zapf_Dingbats']">&#10095;</span>
+                                    <span className="text-white font-medium text-xl px-2">&#10095;</span>
                                 </button>
                             </NavLink>
                         </div>
@@ -91,7 +91,7 @@ export const CharacterInfo = () => {
                             </div>
                             <NavLink to={location?.url ? `/locations/${getId(location?.url)}` : ''}>
                                 <button className="rounded bg-[#3d4451]">
-                                    <span className="text-white text-xl px-2 font-['Zapf_Dingbats']">&#10095;</span>
+                                    <span className="text-white text-xl px-2">&#10095;</span>
                                 </button>
                             </NavLink>
                         </div>
@@ -99,7 +99,7 @@ export const CharacterInfo = () => {
                 </div>
                 <div>
                     <h3 className="text-gray-500 font-medium text-lg mb-3 p-2">Episodes</h3>
-                    <ul className="sm:h-[50vh] sm:overflow-hidden sm:overflow-y-auto items-start sm:pr-2">
+                    <ul className="sm:h-[47vh] sm:overflow-hidden sm:overflow-y-auto items-start sm:pr-2">
                         {episode?.map(episodeItem => <EpisodeCard key={episodeItem.id} {...episodeItem}/>)}
                     </ul>
                 </div>

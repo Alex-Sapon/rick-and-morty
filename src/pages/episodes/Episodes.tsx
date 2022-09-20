@@ -69,12 +69,11 @@ export const Episodes = () => {
                 <div className="h-[200px] mb-[20px] mx-[auto]">
                     <img className="mx-[auto] h-[100%]" src={Logo} alt="Rick_and_Morty"/>
                 </div>
-                <div className="mb-[40px]">
+                <div className="mb-[40px] sm:flex sm:justify-center">
                     <Input
                         value={value}
                         onChange={e => setValue(e.currentTarget.value)}
-                        className="sm:w-[500px] mx-auto"
-                        valueSpan="."
+                        className="sm:w-[500px]"
                         placeholder="Filter by name or episode..."
                     />
                 </div>

@@ -1,15 +1,4 @@
-const BASE_URL = `https://rickandmortyapi.com/api/`;
-
-function getApi<T>(url: string): Promise<T> {
-    return fetch(BASE_URL + url)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(response.statusText ? response.statusText : "Can't fetch data");
-            }
-
-            return response.json() as Promise<T>;
-        })
-}
+import {getApi} from '../assets';
 
 export const rmAPI = {
     getCharacters({page, name, status, gender, species}: CharacterFilter) {
@@ -20,7 +9,7 @@ export const rmAPI = {
     getCharactersItem(id: string) {
         return getApi<Character>(`character/${id}`);
     },
-    getLocation({page, name, dimension, type}: LocationFilter): Promise<Info<Location[]>> {
+    getLocation({page, name, dimension, type}: LocationFilter) {
         const LOCATION = `location?page=${page}&name=${name}&dimension=${dimension}&type=${type}`;
 
         return getApi<Info<Location[]>>(LOCATION);
@@ -59,8 +48,7 @@ export interface Endpoints {
 export interface CharacterFilter {
     name?: string
     /**
-     * 'Genetic experiment'
-     * | 'Superhuman (Ghost trains summoner' | 'Parasite' | 'Human with antennae'
+     * 'Genetic experiment' | 'Superhuman (Ghost trains summoner' | 'Parasite' | 'Human with antennae'
      * | 'Human with ants in his eyes' | 'Fish-Person' | 'Cromulon' | 'Mytholog'
      */
     type?: string

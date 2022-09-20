@@ -5,7 +5,7 @@ import {
     InitialStateType,
     charactersSlice
 } from '../reducer/charactersReducer';
-import {Character, Info} from '../../../api';
+import {Character, CharacterFilter, Info} from '../../../api';
 
 global.fetch = jest.fn();
 
@@ -93,6 +93,21 @@ beforeEach(() => {
 // })
 
 describe('charactersSlice', () => {
+    it('should change state -> filter with action "changeCharactersFilter"', () => {
+        const filter: CharacterFilter = {
+            page: 1,
+            name: 'Rick',
+            type: '',
+            gender: 'Male',
+            species: 'Human',
+            status: 'Male'
+        };
+
+        const state = charactersSlice.reducer(initialState, changeCharactersFilter(filter));
+
+        expect(state.filter.name).toBe(filter.name);
+    })
+
     it('should change status with "fetchCharacters.pending" action', () => {
         const state = charactersSlice.reducer(initialState, fetchCharacters.pending);
 
@@ -145,6 +160,10 @@ describe('charactersSlice', () => {
 
         const state = charactersSlice.reducer(initialState, fetchCharacters.rejected(null, error, undefined, error));
 
-        expect(state.error).toBe('Can\'t fetch data');
+        expect(state.error).toBe(error);
+    })
+
+    it('should change status with "fetchCharactersItem.fulfilled" action', () => {
+
     })
 })

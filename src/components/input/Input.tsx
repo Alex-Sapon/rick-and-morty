@@ -20,7 +20,7 @@ export const Input = ({value, onValueChange, type, valueSpan, className, onChang
 
     return (
         <div className="flex flex-col">
-            <span className="col-span-1 p-1 text-transparent font-bold">{valueSpan}</span>
+            {valueSpan&& <span className="col-span-1 p-1 text-transparent font-bold">{valueSpan}</span>}
             <label className="relative block">
                     <span className="absolute inset-y-0 left-0 flex items-center pl-2">
                         <svg className="h-5 w-5 fill-slate-300" width="24" height="24" viewBox="0 0 24 24" fill="none"
