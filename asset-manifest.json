@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/rick-and-morty/static/css/main.0d3ee857.css",
-    "main.js": "/rick-and-morty/static/js/main.8d11e730.js",
+    "main.css": "/rick-and-morty/static/css/main.8f6397ff.css",
+    "main.js": "/rick-and-morty/static/js/main.ab52ebda.js",
     "static/media/preloader.gif": "/rick-and-morty/static/media/preloader.673bff6273b97afbc2aa.gif",
     "static/media/bg-locations.png": "/rick-and-morty/static/media/bg-locations.83a92c7b382954aef2e4.png",
     "static/media/logo_name.svg": "/rick-and-morty/static/media/logo_name.397f51d0632c2f21654b5d86a9d5da20.svg",
     "static/media/logo_eyes.png": "/rick-and-morty/static/media/logo_eyes.43f520e2e3c2f35f46ad.png",
     "index.html": "/rick-and-morty/index.html",
-    "main.0d3ee857.css.map": "/rick-and-morty/static/css/main.0d3ee857.css.map",
-    "main.8d11e730.js.map": "/rick-and-morty/static/js/main.8d11e730.js.map"
+    "main.8f6397ff.css.map": "/rick-and-morty/static/css/main.8f6397ff.css.map",
+    "main.ab52ebda.js.map": "/rick-and-morty/static/js/main.ab52ebda.js.map"
   },
   "entrypoints": [
-    "static/css/main.0d3ee857.css",
-    "static/js/main.8d11e730.js"
+    "static/css/main.8f6397ff.css",
+    "static/js/main.ab52ebda.js"
   ]
 }
