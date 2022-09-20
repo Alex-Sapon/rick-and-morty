@@ -1,11 +1,15 @@
-import {fetchCharacters, fetchCharactersItem, InitialStateType, charactersReducer} from '../reducer/charactersReducer';
-import {RootState} from '../../../components/app/store';
+import {
+    fetchCharacters,
+    fetchCharactersItem,
+    changeCharactersFilter,
+    InitialStateType,
+    charactersSlice
+} from '../reducer/charactersReducer';
 import {Character, Info} from '../../../api';
 
 global.fetch = jest.fn();
 
 let initialState: InitialStateType;
-let getState: () => RootState;
 
 beforeEach(() => {
     initialState = {
@@ -90,7 +94,7 @@ beforeEach(() => {
 
 describe('charactersSlice', () => {
     it('should change status with "fetchCharacters.pending" action', () => {
-        const state = charactersReducer(initialState, fetchCharacters.pending);
+        const state = charactersSlice.reducer(initialState, fetchCharacters.pending);
 
         expect(state.isLoading).toBe(true);
         expect(state.error).toBeNull();
@@ -122,7 +126,7 @@ describe('charactersSlice', () => {
             }
         };
 
-        const state = charactersReducer(initialState, fetchCharacters.fulfilled(payload, ''));
+        const state = charactersSlice.reducer(initialState, fetchCharacters.fulfilled(payload, ''));
 
         expect(state).toEqual({
             filter: initialState.filter,
@@ -136,5 +140,11 @@ describe('charactersSlice', () => {
         })
     })
 
-    it('should change status with "fetchCharacters.rejected" action', () => {})
+    it('should change status with "fetchCharacters.rejected" action', () => {
+        const error = 'Can\'t fetch data';
+
+        const state = charactersSlice.reducer(initialState, fetchCharacters.rejected(null, error, undefined, error));
+
+        expect(state.error).toBe('Can\'t fetch data');
+    })
 })

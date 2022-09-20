@@ -29,24 +29,26 @@ export const fetchCharactersItem = createAsyncThunk<Character<Episode[]>, string
             return {...result, episode};
         }
 
-       return {...result, episode: []};
+        return {...result, episode: []};
     } catch (e) {
         return rejectWithValue(getErrorMessage(e));
     }
 })
 
+const initialState: InitialStateType = {
+    filter: {page: 1, type: '', species: '', gender: '', status: '', name: ''},
+    data: {
+        info: {count: 0, next: '', pages: 0, prev: ''},
+        results: [],
+    },
+    isLoading: false,
+    error: null,
+    character: {} as Character<Episode[]>,
+} as InitialStateType
+
 export const charactersSlice = createSlice({
     name: 'characters',
-    initialState: {
-        filter: {page: 1, type: '', species: '', gender: '', status: '', name: ''},
-        data: {
-            info: {count: 0, next: '', pages: 0, prev: ''},
-            results: [],
-        },
-        isLoading: false,
-        error: null,
-        character: {} as Character<Episode[]>,
-    } as InitialStateType,
+    initialState,
     reducers: {
         changeCharactersFilter(state, action: PayloadAction<CharacterFilter>) {
             state.filter = action.payload;
@@ -69,15 +71,14 @@ export const charactersSlice = createSlice({
                 state.error = null;
             })
             .addMatcher(isError, (state, action: PayloadAction<string>) => {
-            state.isLoading = false;
-            state.error = action.payload;
-        })
+                state.isLoading = false;
+                state.error = action.payload;
+            })
 
     }
 })
 
-export const charactersReducer = charactersSlice.reducer;
-const {changeCharactersFilter} = charactersSlice.actions;
+export const {changeCharactersFilter} = charactersSlice.actions;
 export const charactersActions = {fetchCharacters, changeCharactersFilter, fetchCharactersItem};
 
 export type InitialStateType = {

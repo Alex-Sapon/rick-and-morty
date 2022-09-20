@@ -44,7 +44,7 @@ const initialState: InitialStateType = {
     error: null,
 }
 
-const locationsSlice = createSlice({
+export const locationsSlice = createSlice({
     name: 'locations',
     initialState,
     reducers: {
@@ -75,7 +75,6 @@ const locationsSlice = createSlice({
     }
 })
 
-export const locationsReducer = locationsSlice.reducer;
 const {changeLocationsFilter} = locationsSlice.actions;
 export const locationsActions = {fetchLocations, changeLocationsFilter, fetchLocationsItem};
 

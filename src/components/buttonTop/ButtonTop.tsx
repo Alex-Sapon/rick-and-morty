@@ -23,7 +23,7 @@ export const ButtonTop = () => {
         <div className={`${showButton ? 'block' : 'hidden'}`}>
             <button
                 onClick={onScrollToTopClick}
-                className="fixed z-90 w-[40px] h-[40px] sm:w-[50px] sm:h-[50px] right-5 sm:right-10 bottom-5 sm:bottom-10 flex items-center justify-center drop-shadow-md rounded-full bg-indigo-500 text-white text-3xl font-medium"
+                className="font-['Zapf_Dingbats'] fixed z-90 w-[40px] h-[40px] sm:w-[50px] sm:h-[50px] right-5 sm:right-10 bottom-5 sm:bottom-10 flex items-center justify-center drop-shadow-md rounded-full bg-indigo-500 text-white text-3xl font-medium"
             >&#129049;</button>
         </div>
     )

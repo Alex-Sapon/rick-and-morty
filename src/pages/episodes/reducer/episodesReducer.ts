@@ -3,9 +3,9 @@ import {Character, Episode, EpisodeFilter, Info, rmAPI} from '../../../api';
 import {RootState} from '../../../components/app/store';
 import {getErrorMessage, getId, isError, isPending} from '../../../assets';
 
-const fetchEpisode = createAsyncThunk<Info<Episode[]>, void, { rejectValue: string }>
+const fetchEpisode = createAsyncThunk<Info<Episode[]>, void, { rejectValue: string, state: RootState }>
 ('episode/fetchEpisodes', async (_, {rejectWithValue, getState}) => {
-    const {page, name} = (getState() as RootState).episodesPage.filter;
+    const {page, name} = getState().episodesPage.filter;
 
     try {
         return await rmAPI.getEpisode({page, name});
@@ -46,7 +46,7 @@ const initialState: InitialStateType = {
     error: null,
 }
 
-const episodesSlice = createSlice({
+export const episodesSlice = createSlice({
     name: 'episode',
     initialState,
     reducers: {
@@ -77,7 +77,6 @@ const episodesSlice = createSlice({
     }
 })
 
-export const episodesReducer = episodesSlice.reducer;
 const {changeEpisodeFilter} = episodesSlice.actions;
 export const episodeActions = {fetchEpisode, fetchEpisodeItem, changeEpisodeFilter};
 

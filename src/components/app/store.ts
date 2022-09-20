@@ -1,18 +1,15 @@
 import {configureStore} from '@reduxjs/toolkit';
 import thunk from 'redux-thunk';
-import {combineReducers} from 'redux';
-import {charactersReducer} from '../../pages/characters/reducer/charactersReducer';
-import {locationsReducer} from '../../pages/locations';
-import {episodesReducer} from '../../pages/episodes';
-
-const rootReducer = combineReducers({
-    charactersPage: charactersReducer,
-    locationsPage: locationsReducer,
-    episodesPage: episodesReducer,
-})
+import {charactersSlice} from '../../pages/characters';
+import {locationsSlice} from '../../pages/locations';
+import {episodesSlice} from '../../pages/episodes';
 
 export const store = configureStore({
-    reducer: rootReducer,
+    reducer: {
+        charactersPage: charactersSlice.reducer,
+        locationsPage: locationsSlice.reducer,
+        episodesPage: episodesSlice.reducer
+    },
     middleware: getDefaultMiddleware => getDefaultMiddleware().prepend(thunk)
 })
 
