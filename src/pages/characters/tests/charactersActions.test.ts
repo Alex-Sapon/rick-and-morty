@@ -5,7 +5,7 @@ import {
     InitialStateType,
     charactersSlice
 } from '../reducer/charactersReducer';
-import {Character, CharacterFilter, Info} from '../../../api';
+import {Character, CharacterFilter, Episode, Info} from '../../../api';
 
 global.fetch = jest.fn();
 
@@ -37,77 +37,7 @@ beforeEach(() => {
     }
 })
 
-// describe('charactersThunk', () => {
-//     it('should fetchCharacters with resolved response', async () => {
-//         const mockState: Info<Character[]> = {
-//             info: {count: 1, next: null, prev: null, pages: 1},
-//             results: []
-//         };
-//
-//         (<jest.Mock>fetch).mockResolvedValue({
-//             ok: true,
-//             json: () => Promise.resolve(mockState)
-//         });
-//
-//         getState = jest.fn();
-//
-//         const dispatch = jest.fn();
-//         const thunk = fetchCharacters();
-//
-//         await thunk(dispatch, getState, {});
-//
-//         const {calls} = dispatch.mock;
-//         expect(calls).toHaveLength(2);
-//
-//         const [start, end] = calls;
-//         console.log(dispatch.mock.calls)
-//
-//         expect(start[0].type).toBe(fetchCharacters.pending.type);
-//         expect(end[0].type).toBe(fetchCharacters.fulfilled.type);
-//         expect(end[0].payload).toBe(mockState);
-//     })
-//
-//     it('should fetchCharacters with rejected response', async () => {
-//         (<jest.Mock>fetch).mockResolvedValue({
-//             ok: false,
-//             json: () => Promise.resolve(mockState)
-//         });
-//
-//         getState = jest.fn();
-//
-//         const dispatch = jest.fn();
-//         const thunk = fetchCharacters();
-//
-//         await thunk(dispatch, getState, {});
-//
-//         const {calls} = dispatch.mock;
-//         expect(calls).toHaveLength(2);
-//
-//         const [start, end] = calls;
-//
-//         console.log(end)
-//
-//         expect(start[0].type).toBe(fetchCharacters.pending.type);
-//         expect(end[0].type).toBe(fetchCharacters.rejected.type);
-//     })
-// })
-
-describe('charactersSlice', () => {
-    it('should change state -> filter with action "changeCharactersFilter"', () => {
-        const filter: CharacterFilter = {
-            page: 1,
-            name: 'Rick',
-            type: '',
-            gender: 'Male',
-            species: 'Human',
-            status: 'Male'
-        };
-
-        const state = charactersSlice.reducer(initialState, changeCharactersFilter(filter));
-
-        expect(state.filter.name).toBe(filter.name);
-    })
-
+describe('fetchCharacters', () => {
     it('should change status with "fetchCharacters.pending" action', () => {
         const state = charactersSlice.reducer(initialState, fetchCharacters.pending);
 
@@ -162,8 +92,79 @@ describe('charactersSlice', () => {
 
         expect(state.error).toBe(error);
     })
+})
+
+describe('fetchCharactersItem', () => {
+    it('should change status with "fetchCharactersItem.pending" action', () => {
+        const state = charactersSlice.reducer(initialState, fetchCharactersItem.pending);
+
+        expect(state.isLoading).toBeTruthy();
+    })
 
     it('should change status with "fetchCharactersItem.fulfilled" action', () => {
+        const character: Character<Episode[]> = {
+            id: 1,
+            name: 'Rick Sanchez',
+            status: 'Alive',
+            species: 'Human',
+            type: '',
+            gender: 'Male',
+            origin: {
+                name: 'Earth (C-137)',
+                url: 'https://rickandmortyapi.com/api/location/1'
+            },
+            location: {
+                name: 'Citadel of Ricks',
+                url: 'https://rickandmortyapi.com/api/location/3'
+            },
+            image: 'https://rickandmortyapi.com/api/character/avatar/1.jpeg',
+            episode: [
+                {
+                    id: 1,
+                    name: 'Pilot',
+                    air_date: 'December 2, 2013',
+                    episode: 'S01E01',
+                    characters: [
+                        'https://rickandmortyapi.com/api/character/1',
+                        'https://rickandmortyapi.com/api/character/2',
+                        'https://rickandmortyapi.com/api/character/35',
+                    ],
+                    url: 'https://rickandmortyapi.com/api/episode/1',
+                    created: '2017-11-10T12:56:33.798Z'
+                },
+            ],
+            url: 'https://rickandmortyapi.com/api/character/1',
+            created: '2017-11-04T18:48:46.250Z'
+        };
 
+        const state = charactersSlice.reducer(initialState, fetchCharactersItem.fulfilled(character, '1', ''));
+
+        expect(state.character.name).toBe(character.name);
+        expect(state.character.episode.length).toBeTruthy();
+    })
+
+    it('should change status with "fetchCharactersItem.rejected" action', () => {
+        const error = 'Can\'t fetch data';
+
+        const state = charactersSlice.reducer(initialState, fetchCharactersItem.rejected(null, error, '', error));
+
+        expect(state.error).toBe(error);
+    })
+})
+
+describe('changeCharactersFilter', () => {
+    it('should change state -> filter with action "changeCharactersFilter"', () => {
+        const filter: CharacterFilter = {
+            page: 1,
+            name: 'Rick',
+            type: '',
+            gender: 'Male',
+            species: 'Human',
+            status: 'Male'
+        };
+
+        const state = charactersSlice.reducer(initialState, changeCharactersFilter(filter));
+
+        expect(state.filter.name).toBe(filter.name);
     })
 })

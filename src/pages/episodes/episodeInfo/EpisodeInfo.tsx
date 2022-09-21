@@ -5,7 +5,11 @@ import {Preloader} from '../../../components/preloader';
 import {episodeActions} from '../reducer/episodesReducer';
 import {CharacterCard} from '../../characters/characterCard';
 import {
-    selectEpisode, selectEpisodeAirDate, selectEpisodeCharacters, selectEpisodeIsLoading, selectEpisodeName
+    selectEpisode,
+    selectEpisodeAirDate,
+    selectEpisodeCharacters,
+    selectEpisodeIsLoading,
+    selectEpisodeName
 } from '../selectors';
 
 export const EpisodeInfo = () => {

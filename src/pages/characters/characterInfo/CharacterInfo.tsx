@@ -5,9 +5,16 @@ import {charactersActions} from '../reducer/charactersReducer';
 import {Preloader} from '../../../components/preloader';
 import {getId} from '../../../assets';
 import {
-    selectCharacterEpisode, selectCharacterGender, selectCharacterImage, selectCharacterIsLoading,
-    selectCharacterLocation, selectCharacterName, selectCharacterOrigin, selectCharacterSpecies,
-    selectCharacterStatus, selectCharacterType
+    selectCharacterEpisode,
+    selectCharacterGender,
+    selectCharacterImage,
+    selectCharacterIsLoading,
+    selectCharacterLocation,
+    selectCharacterName,
+    selectCharacterOrigin,
+    selectCharacterSpecies,
+    selectCharacterStatus,
+    selectCharacterType
 } from '../selectors';
 import {EpisodeCard} from '../../episodes/episodeCard/EpisodeCard';
 

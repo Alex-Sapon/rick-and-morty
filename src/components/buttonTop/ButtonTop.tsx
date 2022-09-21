@@ -23,8 +23,12 @@ export const ButtonTop = () => {
         <div className={`${showButton ? 'block' : 'hidden'}`}>
             <button
                 onClick={onScrollToTopClick}
-                className="font-['Zapf_Dingbats'] fixed z-90 w-[40px] h-[40px] sm:w-[50px] sm:h-[50px] right-5 sm:right-10 bottom-5 sm:bottom-10 flex items-center justify-center drop-shadow-md rounded-full bg-indigo-500 text-white text-3xl font-medium"
-            >&#129049;</button>
+                className="fixed z-90 w-[40px] h-[40px] sm:w-[50px] sm:h-[50px] right-5 sm:right-10 bottom-5 sm:bottom-10 flex items-center justify-center drop-shadow-md rounded-full bg-indigo-500 text-white"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 19.5v-15m0 0l-6.75 6.75M12 4.5l6.75 6.75" />
+                </svg>
+            </button>
         </div>
     )
 }
