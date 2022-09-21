@@ -3,7 +3,7 @@ import {Character, Episode, EpisodeFilter, Info, rmAPI} from '../../../api';
 import {RootState} from '../../../components/app/store';
 import {getErrorMessage, getId, isError, isPending} from '../../../assets';
 
-const fetchEpisode = createAsyncThunk<Info<Episode[]>, void, { rejectValue: string, state: RootState }>
+export const fetchEpisode = createAsyncThunk<Info<Episode[]>, void, { rejectValue: string, state: RootState }>
 ('episode/fetchEpisodes', async (_, {rejectWithValue, getState}) => {
     const {page, name} = getState().episodesPage.filter;
 
@@ -14,7 +14,7 @@ const fetchEpisode = createAsyncThunk<Info<Episode[]>, void, { rejectValue: stri
     }
 })
 
-const fetchEpisodeItem = createAsyncThunk<Episode<Character[]>, string, { rejectValue: string }>
+export const fetchEpisodeItem = createAsyncThunk<Episode<Character[]>, string, { rejectValue: string }>
 ('episode/fetchEpisodeItem', async (id, {rejectWithValue}) => {
     try {
         const result = await rmAPI.getEpisodeItem(id);
@@ -77,10 +77,10 @@ export const episodesSlice = createSlice({
     }
 })
 
-const {changeEpisodeFilter} = episodesSlice.actions;
+export const {changeEpisodeFilter} = episodesSlice.actions;
 export const episodeActions = {fetchEpisode, fetchEpisodeItem, changeEpisodeFilter};
 
-type InitialStateType = {
+export type InitialStateType = {
     filter: EpisodeFilter
     data: Info<Episode[]>
     episode: Episode<Character[]>

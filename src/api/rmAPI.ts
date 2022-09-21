@@ -1,29 +1,29 @@
-import {getApi} from '../assets';
+import {apiGet} from '../assets';
 
 export const rmAPI = {
     getCharacters({page, name, status, gender, species}: CharacterFilter) {
         const CHARACTERS = `character/?page=${page}&name=${name}&status=${status}&gender=${gender}&species=${species}`;
 
-        return getApi<Info<Character[]>>(CHARACTERS);
+        return apiGet<Info<Character[]>>(CHARACTERS);
     },
     getCharactersItem(id: string) {
-        return getApi<Character>(`character/${id}`);
+        return apiGet<Character>(`character/${id}`);
     },
     getLocation({page, name, dimension, type}: LocationFilter) {
         const LOCATION = `location?page=${page}&name=${name}&dimension=${dimension}&type=${type}`;
 
-        return getApi<Info<Location[]>>(LOCATION);
+        return apiGet<Info<Location[]>>(LOCATION);
     },
     getLocationItem(id: string) {
-        return getApi<Location>(`location/${id}`);
+        return apiGet<Location>(`location/${id}`);
     },
     getEpisode({page, name}: EpisodeFilter) {
         const EPISODE = `episode?page=${page}&name=${name}`;
 
-        return getApi<Info<Episode[]>>(EPISODE);
+        return apiGet<Info<Episode[]>>(EPISODE);
     },
     getEpisodeItem(id: string) {
-        return getApi<Episode>(`episode/${id}`);
+        return apiGet<Episode>(`episode/${id}`);
     },
 }
 

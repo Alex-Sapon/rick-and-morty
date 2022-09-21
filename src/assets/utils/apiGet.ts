@@ -1,6 +1,6 @@
 const BASE_URL = `https://rickandmortyapi.com/api/`;
 
-export function getApi<T>(url: string): Promise<T> {
+export function apiGet<T>(url: string): Promise<T> {
     return fetch(BASE_URL + url)
         .then(response => {
             if (!response.ok) {
